@@ -1,3 +1,5 @@
 language: node_js
+before_install:
+  - "phantomjs -v"
 node_js:
-    - "0.10"
+  - "iojs"
