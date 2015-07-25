@@ -3,8 +3,8 @@ language: node_js
 node_js:
   - "iojs"
 
-before_install:
-  - sudo pip install codecov
+#before_install:
+#  - sudo pip install codecov
 
-after_success:
-  - codecov
+#after_success:
+  #- codecov
