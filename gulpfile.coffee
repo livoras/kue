@@ -15,7 +15,6 @@ gulp.task 'clean', (cb)->
   del.sync('bin')
 
 gulp.task 'kue', -> 
-  console.log 'guu.....'
   gulp.src('src/kue.js', {})
       .pipe browserify
         debug: true

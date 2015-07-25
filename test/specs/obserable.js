@@ -8,11 +8,11 @@ describe("Test obserable", function() {
       attr = obserable("i love you")
     })
 
-    it("init default value and get it", function() {
+    it("Initializing default value and get it.", function() {
       attr().should.be.equal("i love you")
     })
 
-    it("watcher function should be invoked when attr is changed", function() {
+    it("Watcher function should be invoked when value is changed.", function() {
       var watcher = sinon.spy()
       attr.$$.watch(watcher)
       var val = "i love you, too"
@@ -20,5 +20,6 @@ describe("Test obserable", function() {
       watcher.should.have.been.calledWith(val, attr.$$)
       attr().should.be.equal("i love you, too")
     })
+    
   })
 })
