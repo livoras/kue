@@ -5,7 +5,7 @@ var directives = require("./directives")
 
 exports.bindText = function(textNode, kue) {
   var vm = kue.vm
-  var text = textNode.textContent
+  var text = textNode.textContent || textNode.nodeValue // fuck IE7, 8
   var expressions = parser.parse(text)
   function writeResult() {
     var textTpl = text
@@ -13,7 +13,11 @@ exports.bindText = function(textNode, kue) {
       var result = parser.exec(expression, vm)
       textTpl = textTpl.replace(expression.rawExp, result)
     })
-    textNode.textContent = textTpl
+    if (textNode.nodeValue) {
+      textNode.nodeValue = textTpl
+    } else {
+      textNode.textNode = textTpl
+    }
   }
   writeResult()
   watchAllTokens(expressions, kue, writeResult)
@@ -21,17 +25,15 @@ exports.bindText = function(textNode, kue) {
 
 function watchAllTokens(expressions, kue, fn) {
   var vm = kue.vm
-  var tokens = {}
   _.each(expressions, function(expression) {
     _.each(expression.tokens, function(token) {
-      if (tokens[token]) return
-      tokens[token] = 1
+      watchToken(token)
     })
   })
 
-  for(token in tokens) {
+  function watchToken(token) {
     var obserableKey = vm[token]
-    if (_.isUndefined(obserableKey)) continue
+    if (_.isUndefined(obserableKey)) return
     if (_.isObserable(obserableKey)) {
       obserableKey.$$.watch(fn)
     }

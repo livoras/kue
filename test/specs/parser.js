@@ -68,4 +68,8 @@ describe("Test parser", function() {
             "font-size": "'12px'"
           })
   })
+
+  it("Pase only one time", function() {
+    parser.parseTokens("name + name + name + jerry").should.be.deep.equal(["name", "jerry"])
+  })
 })

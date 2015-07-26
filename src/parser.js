@@ -63,11 +63,15 @@ exports.parseTokens = function(exp) {
   var STRING_REG = /('[\s\S]*?')|("[\s\S]*?")/g
   exp = exp.replace(STRING_REG, '')
   var candidates = exp.match(KEYWORD_REG) || []
+  var tokensMap = {}
   var tokens = []
   _.each(candidates, function(candidate) {
     if (IGNORE_KEYWORDS_REG.test(candidate)) return
-    tokens.push(candidate)
+    tokensMap[candidate] = 1
   })
+  for(var key in tokensMap) {
+    tokens.push(key)
+  }
   return tokens
 }
     
@@ -84,15 +88,15 @@ exports.exec = function(expression, vm) {
 
 exports.parseDirective = function(value) {
   var STRING_DIR_REG = /^[_$\w][_$\w\d\s]*$/
-  var value = value.trim()
+  var value = _.trim(value)
   if (value.length === 0 || STRING_DIR_REG.test(value)) {
     return value
   } else {
     var ret = {}
     _.each(value.split(","), function(map) {
       var kv = map.split(":")
-      var key = cleanQuotes(kv[0].trim())
-      var value = kv[1].trim()
+      var key = cleanQuotes(_.trim(kv[0]))
+      var value = _.trim(kv[1])
       ret[key] = value
     })
     return ret

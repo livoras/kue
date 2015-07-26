@@ -23,9 +23,14 @@ exports.each = function(arr, fn) {
     fn(arr[i])
   }
 }
+
 exports.isUndefined = function(obj) {
   return obj === void 666;
-};
+}
+
+exports.trim = function(str) {
+  return str.replace(/(^\s+)|\s+$/g, "")
+}
 
 /**
  * Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError.

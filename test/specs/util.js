@@ -11,4 +11,7 @@ describe("Test utils functions", function() {
     }
     arr.should.be.deep.equal(newArr)
   })
+  it("trim", function() {
+    _.trim(" i love you    ").should.be.equal("i love you")
+  })
 })
