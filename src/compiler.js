@@ -4,15 +4,12 @@ var binder = require("./binder")
 
 function compileNode(node, kue) {
   if (node.nodeType === 1) {
-    //console.log('ele', node)
     compileAttr(node, kue)
     _.each(node.childNodes, function(node) {
       compileNode(node, kue)
     })
   } if (node.nodeType === 3) {
-    //console.log('text', node);
     binder.bindText(node, kue)
-    //node.textContent = "jerry is good"
   }
 }
 

@@ -8,6 +8,7 @@ function ObserableKey(attr) {
     if (arguments.length === 0) {
       return that.value
     }
+    that.oldValue = this.value
     that.value = attr
     that.notify()
   }
@@ -18,7 +19,7 @@ function ObserableKey(attr) {
 ObserableKey.prototype.notify = function() {
   var that = this
   _.each(this.watchers, function(watcher) {
-    watcher(that.value, that)
+    watcher(that.value, that.oldValue, that)
   })
 }
 

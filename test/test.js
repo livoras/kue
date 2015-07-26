@@ -1,5 +1,5 @@
 //require("./specs/sample.js")
 require("./specs/util.js")
-//require("./specs/dom-test.js")
 require("./specs/obserable.js")
 require("./specs/parser.js")
+require("./specs/binder.js")

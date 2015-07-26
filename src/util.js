@@ -33,6 +33,6 @@ exports.isUndefined = function(obj) {
  */
 exports.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'], function(name) {
   exports['is' + name] = function(obj) {
-    return bject.prototype.toString.call(obj) === '[object ' + name + ']';
+    return Object.prototype.toString.call(obj) === '[object ' + name + ']';
   };
 });

@@ -29,7 +29,7 @@ var KEYWORD_REG = /[_\w][_$\w\d]+/g
 var ignoreKeywords =
   'Math,Date,this,true,false,null,undefined,Infinity,NaN,' +
   'isNaN,isFinite,decodeURI,decodeURIComponent,encodeURI,' +
-  'encodeURIComponent,parseInt,parseFloat'
+  'encodeURIComponent,parseInt,parseFloat,in'
 var IGNORE_KEYWORDS_REG = 
   new RegExp('^(' + ignoreKeywords.replace(/,/g, '\\b|') + '\\b)')
 
@@ -47,21 +47,30 @@ exports.parse = function(text) {
   var expressions = []
   _.each(rawExps, function(rawExp) {
     var exp = exports.getExpFromRawExp(rawExp)
-    var candidates = exp.match(KEYWORD_REG) || []
-    var tokens = []
-    _.each(candidates, function(candidate) {
-      if (IGNORE_KEYWORDS_REG.test(candidate)) return
-      tokens.push(candidate)
-    })
     var expression = {
       rawExp: rawExp,
       exp: exp,
-      tokens:tokens 
+      tokens: exports.parseTokens(exp) 
     }
     expressions.push(expression)
   })
   return expressions 
 }
+
+exports.parseTokens = function(exp) {
+  // TODO: To optimze this regular expression to avoid this case:
+  // "'I\'m ' + name()"
+  var STRING_REG = /('[\s\S]*?')|("[\s\S]*?")/g
+  exp = exp.replace(STRING_REG, '')
+  var candidates = exp.match(KEYWORD_REG) || []
+  var tokens = []
+  _.each(candidates, function(candidate) {
+    if (IGNORE_KEYWORDS_REG.test(candidate)) return
+    tokens.push(candidate)
+  })
+  return tokens
+}
+    
 
 exports.exec = function(expression, vm) {
   var args = []
@@ -73,4 +82,25 @@ exports.exec = function(expression, vm) {
   return (new Function(tokens, exp)).apply(vm, args)
 }
 
+exports.parseDirective = function(value) {
+  var STRING_DIR_REG = /^[_$\w][_$\w\d\s]*$/
+  var value = value.trim()
+  if (value.length === 0 || STRING_DIR_REG.test(value)) {
+    return value
+  } else {
+    var ret = {}
+    _.each(value.split(","), function(map) {
+      var kv = map.split(":")
+      var key = cleanQuotes(kv[0].trim())
+      var value = kv[1].trim()
+      ret[key] = value
+    })
+    return ret
+  }
+}
+
+function cleanQuotes(str) {
+  var QUOTE_REG = /["']/g
+  return str.replace(QUOTE_REG, "")
+}
 makeREG()

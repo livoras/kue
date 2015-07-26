@@ -12,7 +12,8 @@ function Kue(options) {
 
 var vm = {
   name: obserable("Jerry"),
-  app: obserable("Kue App")
+  app: obserable("Kue App"),
+  isShow: obserable(true)
 }
 
 var app = new Kue({
@@ -25,3 +26,4 @@ var app = new Kue({
   }
 })
 
+window.vm = vm

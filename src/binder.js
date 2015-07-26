@@ -16,10 +16,10 @@ exports.bindText = function(textNode, kue) {
     textNode.textContent = textTpl
   }
   writeResult()
-  watchAllTokenrs(expressions, kue, writeResult)
+  watchAllTokens(expressions, kue, writeResult)
 }
 
-function watchAllTokenrs(expressions, kue, fn) {
+function watchAllTokens(expressions, kue, fn) {
   var vm = kue.vm
   var tokens = {}
   _.each(expressions, function(expression) {
@@ -38,13 +38,34 @@ function watchAllTokenrs(expressions, kue, fn) {
   }
 }
 
-exports.bindDir = function(attr, node, vm) {
+exports.bindDir = function(attr, node, kue) {
   var dirName = getDirName(attr)
   if(!dirName) return
   if(!directives[dirName]) {
     throw new Error("Directive" + dirName + " is not found.")
   }
-  console.log(attr.name, dirName, directives)
+  var directive = parser.parseDirective(attr.value)
+  var tokens = getTokensFromDirective(directive)
+  var dirObj = directives[dirName]
+  dirObj.bind(node, attr, kue)
+  _.each(tokens, function(token) {
+    kue.vm[token].$$.watch(function(newVal, oldVal, obserable) {
+      dirObj.update(node, attr, kue)
+    })
+  })
+}
+
+function getTokensFromDirective(directive) {
+  if (_.isString(directive)) {
+    return parser.parseTokens(directive)
+  } else {
+    var allTokens = []
+    for (key in directive) {
+      var tokens = parser.parseTokens(directive[key])
+      allTokens.push.apply(allTokens, tokens)
+    }
+    return allTokens
+  }
 }
 
 function getDirName(attr) {
@@ -55,3 +76,5 @@ function getDirName(attr) {
   }
   return void 666
 }
+
+exports.getTokensFromDirective = getTokensFromDirective

@@ -7,18 +7,24 @@ describe("Test parser", function() {
     parser.getRawExps("{firstName + lastName} is my {name}")
           .should.be.deep.equal(["{firstName + lastName}", "{name}"])
   })
-  
+
   it("Get expression objects from text.", function() {
-    parser.parse("{name() === true ? good(): bad()}")
+    parser.parse("{name() === true ? good() + 'ye': bad()}")
           .should.be.deep.equal([{
-            rawExp: "{name() === true ? good(): bad()}",
-            exp: "name() === true ? good(): bad()",
+            rawExp: "{name() === true ? good() + 'ye': bad()}",
+            exp: "name() === true ? good() + 'ye': bad()",
             tokens: ["name", "good", "bad"]
           }])
-    parser.parse("Today totalCount is {parseFloat(totalCount())}, {name} should make it.")
+    parser.parse('{name() + "Good\' name is my love"}')
           .should.be.deep.equal([{
-            rawExp: "{parseFloat(totalCount())}",
-            exp: "parseFloat(totalCount())",
+            rawExp: '{name() + "Good\' name is my love"}',
+            exp: 'name() + "Good\' name is my love"',
+            tokens: ["name"]
+          }])
+    parser.parse("Today totalCount is {parseFloat(totalCount()) + 'Hello'}, {name} should make it.")
+          .should.be.deep.equal([{
+            rawExp: "{parseFloat(totalCount()) + 'Hello'}",
+            exp: "parseFloat(totalCount()) + 'Hello'",
             tokens: ["totalCount"]
           }, {
             rawExp: "{name}",
@@ -48,5 +54,18 @@ describe("Test parser", function() {
             exp: "name() === true ? good(): bad()",
             tokens: ["name", "good", "bad"]
           }])
+  })
+
+  it("Parse string directive.", function() {
+    parser.parseDirective("users").should.be.equal("users")
+    parser.parseDirective("user in users").should.be.equal("user in users")
+  })
+
+  it("Parse key-value directive.", function() {
+    parser.parseDirective("color: red, 'font-size': '12px'")
+          .should.be.deep.equal({
+            "color": "red",
+            "font-size": "'12px'"
+          })
   })
 })
