@@ -18,8 +18,9 @@ describe("Test obserable", function() {
       var val = "i love you, too"
       attr(val)
       watcher.should.have.been.calledWith(val, attr.$$)
+      watcher.should.have.been.calledOnce
       attr().should.be.equal("i love you, too")
     })
-    
+
   })
 })

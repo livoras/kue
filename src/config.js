@@ -1,6 +1,6 @@
 var config = {}
 
-config.prefix = "{"
-config.suffix = "}"
+config.openTag = "{"
+config.closeTag = "}"
 
 module.exports = config

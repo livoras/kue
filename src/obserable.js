@@ -1,6 +1,6 @@
 var _ = require("./util.js")
 
-function ObserableAttr(attr) {
+function ObserableKey(attr) {
   var that = this
   this.value = attr
   this.watchers = []
@@ -15,14 +15,14 @@ function ObserableAttr(attr) {
   return getOrSet
 }
 
-ObserableAttr.prototype.notify = function() {
+ObserableKey.prototype.notify = function() {
   var that = this
   _.each(this.watchers, function(watcher) {
     watcher(that.value, that)
   })
 }
 
-ObserableAttr.prototype.watch = function(fn) {
+ObserableKey.prototype.watch = function(fn) {
   this.watchers.push(fn)
 }
 
@@ -32,10 +32,13 @@ function ObserableArray(arr) {
 
 function obserable(obj) {
   if (!_.isArray(obj)) {
-    return new ObserableAttr(obj)
+    return new ObserableKey(obj)
   } else {
     return new ObserableArray(obj)
   }
 }
+
+obserable.ObserableKey = ObserableKey
+obserable.ObserableArray = ObserableArray
 
 module.exports = obserable

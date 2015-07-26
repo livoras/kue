@@ -15,7 +15,7 @@ gulp.task 'clean', (cb)->
   del.sync('bin')
 
 gulp.task 'kue', -> 
-  gulp.src('src/kue.js', {})
+  gulp.src('src/kue.js')
       .pipe browserify
         debug: true
         transform: stringify
@@ -25,7 +25,7 @@ gulp.task 'kue', ->
       .pipe livereload()
 
 gulp.task 'test-compile', ->
-  gulp.src('test/test.js', {})
+  gulp.src('test/test.js')
       .pipe browserify 
         debug: true
         transform: stringify

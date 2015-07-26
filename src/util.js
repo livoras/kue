@@ -15,3 +15,17 @@ exports.each = function(arr, fn) {
     fn(arr[i])
   }
 }
+exports.isUndefined = function(obj) {
+  return obj === void 666;
+};
+
+/**
+ * Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError.
+ * steal from underscore: http://underscorejs.org/docs/underscore.html
+ */
+exports.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'], function(name) {
+  exports['is' + name] = function(obj) {
+    return bject.prototype.toString.call(obj) === '[object ' + name + ']';
+  };
+});
+
