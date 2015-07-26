@@ -1,3 +1,11 @@
+var obserable = require("./obserable")
+
+exports.isObserable = function(obj) {
+  var obj = obj.$$
+  return (obj instanceof obserable.ObserableKey) ||
+         (obj instanceof obserable.ObserableArray)
+}
+
 exports.map = function(arr, fn) {
   var results = []
   for(var i = 0, len = arr.length; i < len;i ++) {
@@ -28,4 +36,3 @@ exports.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Er
     return bject.prototype.toString.call(obj) === '[object ' + name + ']';
   };
 });
-

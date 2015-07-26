@@ -11,10 +11,4 @@ describe("Test utils functions", function() {
     }
     arr.should.be.deep.equal(newArr)
   })
-
-  it("Test jQuery and DOM", function() {
-    var $body = $(document.body)
-    $body.html("Kue")
-    $body.html().should.be.equal("Kue")
-  })
 })

@@ -1,7 +1,7 @@
 <div id="jerry">
   {app() + " " + name()} of this {name()}
   <ul>
-    <li k-repeat="This is a app"> {name()} </li>
+    <li k-show="isShow"> {name() === "Jerry" ? "Fuck" : "non!!"} </li>
   <ul>
 </div>
 

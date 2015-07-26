@@ -1,9 +1,16 @@
 var config = require("./config")
 var _ = require("./util")
-var exports = {}
 
-var EXP_REG = new RegExp("\\" + config.openTag + "[\\S\\s]+?" + "\\" + config.closeTag, 'g')
-var REMOVE_REG = new RegExp("\\" + config.openTag + "|" + "\\" + config.closeTag, 'g')
+var SPECIAL_CHARS = /(\*\.\?\+\$\^\[\]\(\)\{\}\|\\\/)/g
+var openTag, closeTag, EXP_REG, REMOVE_REG
+
+function makeREG() {
+  openTag = config.openTag.replace(SPECIAL_CHARS, "\\$1")
+  closeTag = config.closeTag.replace(SPECIAL_CHARS, "\\$1")
+
+  EXP_REG = new RegExp(openTag + "[\\S\\s]+?" + closeTag, 'g')
+  REMOVE_REG = new RegExp(openTag + "|" + closeTag, 'g')
+}
 
 exports.getRawExps = function(text) {
   var results = text.match(EXP_REG) || []
@@ -28,12 +35,14 @@ var IGNORE_KEYWORDS_REG =
 
 /**
  * Parse text and return expressions.
+ * @param {String} text
  * @return {Array<Object>}
  *               - rawExp {String}         e.g "{firstName() + lastName()}"
  *               - exp {String}            e.g "firstName() + lastName()"
  *               - tokens {Array<String>}  e.g ["firstName", "lastName"]
  */
 exports.parse = function(text) {
+  makeREG()
   var rawExps = exports.getRawExps(text)
   var expressions = []
   _.each(rawExps, function(rawExp) {
@@ -64,4 +73,4 @@ exports.exec = function(expression, vm) {
   return (new Function(tokens, exp)).apply(vm, args)
 }
 
-module.exports = exports
+makeREG()

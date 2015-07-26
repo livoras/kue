@@ -1,6 +1,5 @@
-var config = {}
+var config = exports
 
 config.openTag = "{"
 config.closeTag = "}"
-
-module.exports = config
+config.directivePrefix = "k"
