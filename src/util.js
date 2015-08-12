@@ -1,12 +1,13 @@
 var obserable = require("./obserable")
+var _ = exports
 
-exports.isObserable = function(obj) {
+_.isObserable = function(obj) {
   var obj = obj.$$
   return (obj instanceof obserable.ObserableKey) ||
          (obj instanceof obserable.ObserableArray)
 }
 
-exports.map = function(arr, fn) {
+_.map = function(arr, fn) {
   var results = []
   for(var i = 0, len = arr.length; i < len;i ++) {
     results.push(fn(arr[i]))
@@ -14,21 +15,21 @@ exports.map = function(arr, fn) {
   return results
 }
 
-exports.isArray = function(arr) {
+_.isArray = function(arr) {
   return Object.prototype.toString.call(arr) === '[object Array]'
 }
 
-exports.each = function(arr, fn) {
+_.each = function(arr, fn) {
   for (var i = 0, len = arr.length; i < len; i++) {
     fn(arr[i])
   }
 }
 
-exports.isUndefined = function(obj) {
+_.isUndefined = function(obj) {
   return obj === void 666;
 }
 
-exports.trim = function(str) {
+_.trim = function(str) {
   return str.replace(/(^\s+)|\s+$/g, "")
 }
 
@@ -36,8 +37,8 @@ exports.trim = function(str) {
  * Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError.
  * steal from underscore: http://underscorejs.org/docs/underscore.html
  */
-exports.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'], function(name) {
-  exports['is' + name] = function(obj) {
+_.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'], function(name) {
+  _['is' + name] = function(obj) {
     return Object.prototype.toString.call(obj) === '[object ' + name + ']';
   };
 });
