@@ -14,6 +14,17 @@ var $ = function(dom) {
       } else {
         this.el.style[key] = value
       }
+    },
+    on: function(event, fn)  {
+      var el  = this.el
+      if (el.addEventListener) {
+        el.addEventListener(event, fn, false);
+      } else if (el.attachEvent) {
+        el.attachEvent("on" + event, fn)
+      } else {
+        el[event] = fn
+      }
+      return this
     }
   }
 }

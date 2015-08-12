@@ -44,7 +44,7 @@ exports.bindDir = function(attr, node, kue) {
   var dirName = getDirName(attr)
   if(!dirName) return
   if(!directives[dirName]) {
-    throw new Error("Directive" + dirName + " is not found.")
+    throw new Error("Directive `" + dirName + "` is not found.")
   }
   var directive = parser.parseDirective(attr.value)
   var tokens = getTokensFromDirective(directive)

@@ -1,8 +1,16 @@
-<div id="jerry">
-  {app() + " " + name()} of this {name()}
-  <ul>
-    <li k-show="isShow"> {name() === "Jerry" ? "Fuck" : "non!!"} </li>
-  <ul>
-</div>
-
-<script src="bin/kue.js"> </script>
+<!doctype html>
+<html>
+<head></head>
+<body>
+  <div id="jerry">
+    {app() + " " + name()} of this {name()}
+    <ul>
+      <li k-show="isShow"> {name() === "Jerry" ? "Fuck" : "non!!"} </li>
+    </ul>
+      <input name="name" value="" k-model="name"/>
+      <textarea name="name" value="" k-model="name"></textarea>
+      <input />
+  </div>
+  <script src="bin/kue.js"> </script>
+</body>
+</html>
