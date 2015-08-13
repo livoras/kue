@@ -45,10 +45,12 @@ fns["checkbox"] = {
 module.exports = {
   bind: function(ele, attr, kue, dir) {
     var type = $(ele).attr("type") || "text"
+    if (type === "textarea") type = "text"
     fns[type].bind(ele, attr, kue, dir)
   },
   update: function(ele, attr, kue, dir) {
     var type = $(ele).attr("type") || "text"
+    if (type === "textarea") type = "text"
     fns[type].update(ele, attr, kue, dir)
   }
 }
