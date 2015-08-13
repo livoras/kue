@@ -10,6 +10,9 @@ var $ = function(dom) {
         this.el.setAttribute(attr, name)
       }
     },
+    removeAttr: function(attr) {
+      this.el.removeAttribute(attr)
+    },
     css: function(key, value) {
       if (arguments.length === 1) {
         this.el.style[key]

@@ -1,6 +1,15 @@
 <!doctype html>
 <html>
 <head></head>
+<style>
+.outline {
+  border: 1px solid red;
+}
+
+.border {
+  border: 1px solid blue;
+}
+</style>
 <body>
   <div id="jerry">
     {app() + " " + name()} of this {name()}
@@ -10,7 +19,10 @@
       <input name="name" value="" k-model="name"/>
       <textarea name="name" value="" k-model="name()"></textarea>
       <textarea name="name" value="" k-model="app()"></textarea>
-      <input k-class="border: isShow(), outline: !isShow()"/>
+      <input k-class="border: isShow() && isOutLine(), 
+                      outline: !isShow() && isOutLine()"/>
+      <input type="checkbox" name="name" k-model="isShow">
+      <input type="checkbox" name="name" k-model="isOutLine">
   </div>
   <script src="bin/kue.js"> </script>
 </body>
