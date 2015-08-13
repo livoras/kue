@@ -50,13 +50,12 @@ exports.bindDir = function(attr, node, kue) {
   var tokens = getTokensFromDirective(directive)
   var dirObj = directives[dirName]
   dirObj.bind(node, attr, kue, directive)
-  console.log(tokens)
   _.each(tokens, function(token) {
     var obserableKey = kue.vm[token]
     if (_.isUndefined(obserableKey)) return
     if (_.isObserable(obserableKey)) {
       obserableKey.$$.watch(function(newVal, oldVal, obserable) {
-        dirObj.update(node, attr, kue, directive)
+        dirObj.update(node, attr, kue, directive, token)
       })
     }
   })
