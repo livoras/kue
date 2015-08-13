@@ -8,8 +8,9 @@
       <li k-show="isShow"> {name() === "Jerry" ? "Fuck" : "non!!"} </li>
     </ul>
       <input name="name" value="" k-model="name"/>
-      <textarea name="name" value="" k-model="name"></textarea>
-      <input />
+      <textarea name="name" value="" k-model="name()"></textarea>
+      <textarea name="name" value="" k-model="app()"></textarea>
+      <input k-class="border: isShow(), outline: !isShow()"/>
   </div>
   <script src="bin/kue.js"> </script>
 </body>

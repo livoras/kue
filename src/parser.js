@@ -21,8 +21,8 @@ exports.getExpFromRawExp = function(rawExp) {
   return rawExp.replace(REMOVE_REG, "")
 }
 
-/** 
- * Steal from Vue.js: 
+/**
+ * Steal from Vue.js:
  * https://github.com/yyx990803/vue/blob/dev/src/parsers/expression.js
  */
 var KEYWORD_REG = /[_\w][_$\w\d]+/g
@@ -30,7 +30,7 @@ var ignoreKeywords =
   'Math,Date,this,true,false,null,undefined,Infinity,NaN,' +
   'isNaN,isFinite,decodeURI,decodeURIComponent,encodeURI,' +
   'encodeURIComponent,parseInt,parseFloat,in'
-var IGNORE_KEYWORDS_REG = 
+var IGNORE_KEYWORDS_REG =
   new RegExp('^(' + ignoreKeywords.replace(/,/g, '\\b|') + '\\b)')
 
 /**
@@ -50,11 +50,11 @@ exports.parse = function(text) {
     var expression = {
       rawExp: rawExp,
       exp: exp,
-      tokens: exports.parseTokens(exp) 
+      tokens: exports.parseTokens(exp)
     }
     expressions.push(expression)
   })
-  return expressions 
+  return expressions
 }
 
 exports.parseTokens = function(exp) {
@@ -74,7 +74,7 @@ exports.parseTokens = function(exp) {
   }
   return tokens
 }
-    
+
 
 exports.exec = function(expression, vm) {
   var args = []
@@ -87,7 +87,7 @@ exports.exec = function(expression, vm) {
 }
 
 exports.parseDirective = function(value) {
-  var STRING_DIR_REG = /^[_$\w][_$\w\d\s]*$/
+  var STRING_DIR_REG = /^[_$\w][_$\w\d\s\(\)]*$/
   var value = _.trim(value)
   if (value.length === 0 || STRING_DIR_REG.test(value)) {
     return value

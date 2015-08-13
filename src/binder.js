@@ -49,13 +49,14 @@ exports.bindDir = function(attr, node, kue) {
   var directive = parser.parseDirective(attr.value)
   var tokens = getTokensFromDirective(directive)
   var dirObj = directives[dirName]
-  dirObj.bind(node, attr, kue)
+  dirObj.bind(node, attr, kue, directive)
+  console.log(tokens)
   _.each(tokens, function(token) {
     var obserableKey = kue.vm[token]
     if (_.isUndefined(obserableKey)) return
     if (_.isObserable(obserableKey)) {
       obserableKey.$$.watch(function(newVal, oldVal, obserable) {
-        dirObj.update(node, attr, kue)
+        dirObj.update(node, attr, kue, directive)
       })
     }
   })
@@ -65,12 +66,11 @@ function getTokensFromDirective(directive) {
   if (_.isString(directive)) {
     return parser.parseTokens(directive)
   } else {
-    var allTokens = []
+    var allDirsStr = ""
     for (key in directive) {
-      var tokens = parser.parseTokens(directive[key])
-      allTokens.push.apply(allTokens, tokens)
+      allDirsStr += directive[key]
     }
-    return allTokens
+    return parser.parseTokens(allDirsStr)
   }
 }
 

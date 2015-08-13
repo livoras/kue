@@ -1,3 +1,5 @@
+var _ = require("./util")
+
 var $ = function(dom) {
   return {
     el: dom,
@@ -25,6 +27,22 @@ var $ = function(dom) {
         el[event] = fn
       }
       return this
+    },
+    addClass: function(className) {
+      var CLASS_REG = new RegExp("(^|\\s)" + className + "(\\s|$)")
+      var oldClass = _.trim(this.el.className)
+      if (!CLASS_REG.test(oldClass)) {
+        var prefix = (this.el.className.length === 0)
+          ? ""
+          : " "
+        this.el.className += (prefix + className)
+      }
+      return this
+    },
+    removeClass: function(className) {
+      var oldClass = this.el.className
+      var CLASS_REG = new RegExp("(^|\\s)" + className + "(\\s|$)")
+      this.el.className = _.trim(oldClass.replace(CLASS_REG, "$1"))
     }
   }
 }
