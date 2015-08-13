@@ -19,10 +19,10 @@
       <input name="name" value="" k-model="name"/>
       <textarea name="name" value="" k-model="name()"></textarea>
       <textarea name="name" value="" k-model="app()"></textarea>
-      <input k-class="border: isShow() && isOutLine(), 
+      <input k-class="border: isShow() && isOutLine(),
                       outline: !isShow() && isOutLine()"/>
-      <input type="checkbox" name="name" k-model="isShow">
-      <input type="checkbox" name="name" k-model="isOutLine">
+      <input type="checkbox" name="name" k-model="isShow()">
+      <input type="checkbox" name="name" k-model="isOutLine()">
   </div>
   <script src="bin/kue.js"> </script>
 </body>
