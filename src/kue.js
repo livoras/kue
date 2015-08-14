@@ -33,6 +33,7 @@ var user = {
   },
   profile: {
     name: "jerry",
+    desc: "I love you!",
     girls: [
       {name: "lucy", age: 18},
       {name: "Lily", age: 19},
@@ -56,6 +57,7 @@ Wat.mount(
 var todoListTpl = $(document.getElementById("todo-list-tpl")).html()
 var todoItemTpl = $(document.getElementById("todo-item-tpl")).html()
 
+//console.log(parser.parse("{jerry.profile.girls[0].name+tomy.name} @==== I love {tomy.name}"))
 var state = {
   name: "Todo App",
   todos: [

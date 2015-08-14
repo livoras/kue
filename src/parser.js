@@ -1,5 +1,6 @@
 var config = require("./config")
 var _ = require("./util")
+var objectPath = require("./object-path")
 
 var SPECIAL_CHARS = /(\*\.\?\+\$\^\[\]\(\)\{\}\|\\\/)/g
 var openTag, closeTag, EXP_REG, REMOVE_REG
@@ -25,11 +26,11 @@ exports.getExpFromRawExp = function(rawExp) {
  * Steal from Vue.js:
  * https://github.com/yyx990803/vue/blob/dev/src/parsers/expression.js
  */
-var KEYWORD_REG = /[_\w][_$\w\d]+/g
+var PATH_REG = /[_\w][_$\w\d\.\[\]]+/g
 var ignoreKeywords =
   'Math,Date,this,true,false,null,undefined,Infinity,NaN,' +
   'isNaN,isFinite,decodeURI,decodeURIComponent,encodeURI,' +
-  'encodeURIComponent,parseInt,parseFloat,in'
+  'encodeURIComponent,parseInt,parseFloat,in,JSON'
 var IGNORE_KEYWORDS_REG =
   new RegExp('^(' + ignoreKeywords.replace(/,/g, '\\b|') + '\\b)')
 
@@ -47,32 +48,44 @@ exports.parse = function(text) {
   var expressions = []
   _.each(rawExps, function(rawExp) {
     var exp = exports.getExpFromRawExp(rawExp)
+    var tokensAndPaths = exports.parseTokensAndPaths(exp)
     var expression = {
       rawExp: rawExp,
       exp: exp,
-      tokens: exports.parseTokens(exp)
+      tokens: tokensAndPaths.tokens,
+      paths: tokensAndPaths.paths
     }
     expressions.push(expression)
   })
   return expressions
 }
 
-exports.parseTokens = function(exp) {
+exports.parseTokensAndPaths = function(exp) {
   // TODO: To optimze this regular expression to avoid this case:
   // "'I\'m ' + name()"
   var STRING_REG = /('[\s\S]*?')|("[\s\S]*?")/g
   exp = exp.replace(STRING_REG, '')
-  var candidates = exp.match(KEYWORD_REG) || []
+  var pathsCandidates = exp.match(PATH_REG) || []
   var tokensMap = {}
+  var pathMap = {}
   var tokens = []
-  _.each(candidates, function(candidate) {
-    if (IGNORE_KEYWORDS_REG.test(candidate)) return
-    tokensMap[candidate] = 1
+  var paths = []
+  _.each(pathsCandidates, function(path) {
+    token = objectPath.getFirstProp(path)
+    if (IGNORE_KEYWORDS_REG.test(token)) return
+    tokensMap[token] = 1
+    pathMap[path] = 1
   })
-  for(var key in tokensMap) {
-    tokens.push(key)
+  for(var token in tokensMap) {
+    tokens.push(token)
   }
-  return tokens
+  for(var rawPath in pathMap) {
+    paths.push(objectPath.makePathFromRawPath(rawPath))
+  }
+  return {
+    tokens: tokens,
+    paths: paths
+  }
 }
 
 

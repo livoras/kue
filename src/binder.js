@@ -6,6 +6,9 @@ var directives = require("./directives")
 exports.bindText = function(textNode, component) {
   var text = textNode.textContent || textNode.nodeValue // fuck IE7, 8
   var expressions = parser.parse(text)
+  if (expressions.length !== 0) {
+    console.log(expressions)
+  }
   function writeResult() {
     var textTpl = text
     _.each(expressions, function(expression) {
@@ -60,15 +63,15 @@ exports.bindDir = function(attr, node, kue) {
   })
 }
 
-function getTokensFromDirective(directive) {
+function getTokensAndPathsFromDirective(directive) {
   if (_.isString(directive)) {
-    return parser.parseTokens(directive)
+    return parser.parseTokensAndPaths(directive)
   } else {
     var allDirsStr = ""
     for (key in directive) {
       allDirsStr += directive[key]
     }
-    return parser.parseTokens(allDirsStr)
+    return parser.parseTokensAndPaths(allDirsStr)
   }
 }
 
@@ -81,4 +84,4 @@ function getDirName(attr) {
   return void 666
 }
 
-exports.getTokensFromDirective = getTokensFromDirective
+exports.getTokensAndPathsFromDirective = getTokensAndPathsFromDirective

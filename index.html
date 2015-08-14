@@ -45,9 +45,10 @@
   <script id="user-tpl" type="text/template">
     <div>
       <div>{_id}</div>
-      <div>{profile.name}</div>
+      <div>{profile.name} @ {profile.desc + " " + education.school}</div>
+      <div>{JSON.stringify(profile)}</div>
       <div>
-        girls: {profile.girls[0].name + " #### " + profile.avatars[0]}
+        {profile.girls[0].name + " #### " + profile.avatars[0]}
       </div>
     </div>
   </script>

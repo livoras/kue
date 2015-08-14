@@ -10,27 +10,43 @@ describe("Test parser", function() {
 
   it("Get expression objects from text.", function() {
     parser.parse("{name() === true ? good() + 'ye': bad()}")
-          .should.be.deep.equal([{
-            rawExp: "{name() === true ? good() + 'ye': bad()}",
-            exp: "name() === true ? good() + 'ye': bad()",
-            tokens: ["name", "good", "bad"]
-          }])
+      .should.be.deep.equal([{
+        rawExp: "{name() === true ? good() + 'ye': bad()}",
+        exp: "name() === true ? good() + 'ye': bad()",
+        tokens: ["name", "good", "bad"],
+        paths: ["name", "good", "bad"]
+      }])
     parser.parse('{name() + "Good\' name is my love"}')
-          .should.be.deep.equal([{
-            rawExp: '{name() + "Good\' name is my love"}',
-            exp: 'name() + "Good\' name is my love"',
-            tokens: ["name"]
-          }])
+      .should.be.deep.equal([{
+        rawExp: '{name() + "Good\' name is my love"}',
+        exp: 'name() + "Good\' name is my love"',
+        tokens: ["name"],
+        paths: ["name"]
+      }])
     parser.parse("Today totalCount is {parseFloat(totalCount()) + 'Hello'}, {name} should make it.")
-          .should.be.deep.equal([{
-            rawExp: "{parseFloat(totalCount()) + 'Hello'}",
-            exp: "parseFloat(totalCount()) + 'Hello'",
-            tokens: ["totalCount"]
-          }, {
-            rawExp: "{name}",
-            exp: "name",
-            tokens: ["name"]
-          }])
+      .should.be.deep.equal([{
+        rawExp: "{parseFloat(totalCount()) + 'Hello'}",
+        exp: "parseFloat(totalCount()) + 'Hello'",
+        tokens: ["totalCount"],
+        paths: ["totalCount"]
+      }, {
+        rawExp: "{name}",
+        exp: "name",
+        tokens: ["name"],
+        paths: ["name"]
+      }])
+    parser.parse("{jerry.profile.girls[0].name+tomy.name} @==== I love {tomy.name}")
+      .should.be.deep.equal([{
+        rawExp: "{jerry.profile.girls[0].name+tomy.name}",
+        exp: "jerry.profile.girls[0].name+tomy.name",
+        tokens: ["jerry", "tomy"],
+        paths: ["jerry.profile.girls.0.name", "tomy.name"]
+      }, {
+        rawExp: "{tomy.name}",
+        exp: "tomy.name",
+        tokens: ["tomy"],
+        paths: ["tomy.name"]
+      }])
   })
 
   it("Execute an expression.", function() {
@@ -52,7 +68,8 @@ describe("Test parser", function() {
           .should.be.deep.equal([{
             rawExp: "{{name() === true ? good(): bad()}}",
             exp: "name() === true ? good(): bad()",
-            tokens: ["name", "good", "bad"]
+            tokens: ["name", "good", "bad"],
+            paths: ["name", "good", "bad"]
           }])
   })
 
@@ -70,6 +87,6 @@ describe("Test parser", function() {
   })
 
   it("Pase only one time", function() {
-    parser.parseTokens("name + name + name + jerry").should.be.deep.equal(["name", "jerry"])
+    parser.parseTokensAndPaths("name + name + name + jerry").tokens.should.be.deep.equal(["name", "jerry"])
   })
 })

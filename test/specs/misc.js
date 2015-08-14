@@ -1,4 +1,5 @@
 var EventEmitter = require("../../src/event-emitter")
+var objectPath = require("../../src/object-path")
 
 describe("Test anything", function() {
   describe("Event emiter should work", function() {
@@ -25,6 +26,19 @@ describe("Test anything", function() {
       e.emit("some")
       spy.should.have.been.calledTwice
       spy2.should.not.have.been.calledWith(data)
+    })
+  })
+  describe("Object path", function() {
+    it("Should make steps from a path", function() {
+      objectPath.makeStepsFromPath("jerry.0.fuck.you")
+        .should.be.deep.equal([
+          "jerry",
+          "jerry.0",
+          "jerry.0.fuck",
+          "jerry.0.fuck.you"
+        ])
+      objectPath.makeStepsFromPath("jerry.0")
+        .should.be.deep.equal(["jerry", "jerry.0"])
     })
   })
 })
