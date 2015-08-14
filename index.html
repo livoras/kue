@@ -11,6 +11,7 @@
 }
 </style>
 <body>
+  <!--
   <div id="jerry">
     {app() + " " + name()} of this {name()}
     <ul>
@@ -23,7 +24,34 @@
                       outline: !isShow() && isOutLine()"/>
       <input type="checkbox" name="name" k-model="isShow()">
       <input type="checkbox" name="name" k-model="isOutLine()">
+  </div>-->
+  <div id="content">
   </div>
+
+  <script id="todo-list-tpl" type="text/template">
+    <div>
+      <h1>{name}</h1>
+      <div
+        w-repeat="todo in todos"
+        w-component="TodoItem"
+        w-state="todo"></div>
+    </div>
+  </script>
+
+  <script id="todo-item-tpl" type="text/template">
+    <div> {_id}# {content} </div>
+  </script>
+
+  <script id="user-tpl" type="text/template">
+    <div>
+      <div>{_id}</div>
+      <div>{profile.name}</div>
+      <div>
+        girls: {profile.girls[0].name + " #### " + profile.avatars[0]}
+      </div>
+    </div>
+  </script>
+
   <script src="bin/kue.js"> </script>
 </body>
 </html>

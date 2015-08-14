@@ -35,4 +35,8 @@ describe("Test dom operation", function() {
     $body.addClass("fuck")
     $body.el.className.should.be.equal("you fuck")
   })
+  it("should parse dom from string", function() {
+    var dom = $.getDOMNodeFromTemplate("\n<div class='good'>fuck</div>")
+    dom.className.should.be.equal('good')
+  })
 })

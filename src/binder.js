@@ -3,14 +3,13 @@ var _ = require("./util")
 var parser = require("./parser")
 var directives = require("./directives")
 
-exports.bindText = function(textNode, kue) {
-  var vm = kue.vm
+exports.bindText = function(textNode, component) {
   var text = textNode.textContent || textNode.nodeValue // fuck IE7, 8
   var expressions = parser.parse(text)
   function writeResult() {
     var textTpl = text
     _.each(expressions, function(expression) {
-      var result = parser.exec(expression, vm)
+      var result = parser.exec(expression, component.state)
       textTpl = textTpl.replace(expression.rawExp, result)
     })
     if (textNode.nodeValue) {
@@ -20,7 +19,7 @@ exports.bindText = function(textNode, kue) {
     }
   }
   writeResult()
-  watchAllTokens(expressions, kue, writeResult)
+  //watchAllTokens(expressions, component, writeResult)
 }
 
 function watchAllTokens(expressions, kue, fn) {

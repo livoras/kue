@@ -46,8 +46,21 @@ var $ = function(dom) {
       var oldClass = this.el.className
       var CLASS_REG = new RegExp("(^|\\s)" + className + "(\\s|$)")
       this.el.className = _.trim(oldClass.replace(CLASS_REG, "$1"))
+    },
+    html: function(content) {
+      if(arguments.length === 0) {
+        return this.el.innerHTML
+      } else {
+        this.el.innerHTML = content
+      }
     }
   }
+}
+
+$.getDOMNodeFromTemplate = function(template) {
+  var div = document.createElement("div")
+  div.innerHTML = template
+  return div.children[0]
 }
 
 module.exports = $

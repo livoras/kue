@@ -2,21 +2,21 @@ var _ = require("./util")
 var obserable = require("./obserable")
 var binder = require("./binder")
 
-function compileNode(node, kue) {
+function compileNode(node, component) {
   if (node.nodeType === 1) {
-    compileAttr(node, kue)
+    compileAttr(node, component)
     _.each(node.childNodes, function(node) {
-      compileNode(node, kue)
+      compileNode(node, component)
     })
-  } if (node.nodeType === 3) {
-    binder.bindText(node, kue)
+  } else if (node.nodeType === 3) {
+    binder.bindText(node, component)
   }
 }
 
-function compileAttr(node, kue) {
+function compileAttr(node, component) {
   var attrs = node.attributes;
   _.each(attrs, function(attr) {
-    binder.bindDir(attr, node, kue)
+    binder.bindDir(attr, node, component)
   })
 }
 

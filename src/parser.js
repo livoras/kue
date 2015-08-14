@@ -76,14 +76,14 @@ exports.parseTokens = function(exp) {
 }
 
 
-exports.exec = function(expression, vm) {
+exports.exec = function(expression, model) {
   var args = []
   var tokens = expression.tokens
   _.each(tokens, function(token) {
-    args.push(vm[token])
+    args.push(model[token])
   })
   var exp = "return " + expression.exp + ";"
-  return (new Function(tokens, exp)).apply(vm, args)
+  return (new Function(tokens, exp)).apply(model, args)
 }
 
 exports.parseDirective = function(value) {
