@@ -61,8 +61,8 @@ _.extend = function(isDeep) {
 }
 
 function bothAreObject(obj1, obj2) {
-  return (_.isObject(obj1) || _.isArray(obj1))
-         && (_.isObject(obj2) || _.isArray(obj2))
+  return (!_.isUndefined(obj1) && (_.isObject(obj1) || _.isArray(obj1) )) &&
+         (!_.isUndefined(obj2) && (_.isObject(obj2) || _.isArray(obj2)))
 }
 
 _.of = function(obj, fn) {

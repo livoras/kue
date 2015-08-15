@@ -30,24 +30,20 @@ function watchAllTokens(expressions, component, fn) {
   })
 }
 
-exports.bindDir = function(attr, node, kue) {
+exports.bindDir = function(attr, node, component) {
   var dirName = getDirName(attr)
   if(!dirName) return
   if(!directives[dirName]) {
     throw new Error("Directive `" + dirName + "` is not found.")
   }
   var directive = parser.parseDirective(attr.value)
-  var tokens = getTokensFromDirective(directive)
+  var paths = getTokensAndPathsFromDirective(directive).paths
   var dirObj = directives[dirName]
-  dirObj.bind(node, attr, kue, directive)
-  _.each(tokens, function(token) {
-    var obserableKey = kue.vm[token]
-    if (_.isUndefined(obserableKey)) return
-    if (_.isObserable(obserableKey)) {
-      obserableKey.$$.watch(function(newVal, oldVal, obserable) {
-        dirObj.update(node, attr, kue, directive, token)
-      })
-    }
+  dirObj.bind(node, attr, component, directive)
+  _.each(paths, function(path) {
+    component.scope.watch(path, function() {
+      dirObj.update(node, attr, component, directive)
+    })
   })
 }
 

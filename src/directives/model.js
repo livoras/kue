@@ -3,38 +3,43 @@ var $ = require("../dom")
 var fns = {}
 
 fns["text"] = {
-  bind: function(ele, attr, kue, dir) {
-    this.update(ele, attr, kue, dir)
+  bind: function(ele, attr, component, dir) {
+    this.update(ele, attr, component, dir)
     $(ele).on("input", updateVM)
     $(ele).on("keyup", updateVM)
     function updateVM() {
-      var vmName = dir.replace(/\(\)/g, "")
-      kue.vm[vmName](ele.value)
+      var name = dir.replace(/\(\)/g, "")
+      var state = {}
+      state[name] = ele.value
+      component.scope.update(state)
     }
   },
-  update: function(ele, attr, kue, dir) {
-    var vmName = dir.replace(/\(\)/g, "")
-    ele.value = kue.vm[vmName]()
+  update: function(ele, attr, component, dir) {
+    var name = dir.replace(/\(\)/g, "")
+    ele.value = component.scope.state[name]
   }
 }
 
 fns["checkbox"] = {
-  bind: function(ele, attr, kue, dir) {
+  bind: function(ele, attr, component, dir) {
     var $ele = $(ele)
-    this.update(ele, attr, kue, dir)
+    this.update(ele, attr, component, dir)
     $ele.on("click", function() {
-      var vmName = dir.replace(/\(\)/g, "")
+      var name = dir.replace(/\(\)/g, "")
       if (ele.checked) {
-        kue.vm[vmName](true)
+        var value = true
       } else {
-        kue.vm[vmName](false)
+        var value = false
       }
+      var state = {}
+      state[name] = value
+      component.scope.update(state)
     })
   },
-  update: function(ele, attr, kue, dir) {
-    var vmName = dir.replace(/\(\)/g, "")
+  update: function(ele, attr, component, dir) {
+    var name = dir.replace(/\(\)/g, "")
     var $ele = $(ele)
-    if (kue.vm[vmName]()) {
+    if (component.scope.state[name]) {
       $ele.attr("checked", "checked")
     } else {
       $ele.removeAttr("checked")
@@ -43,14 +48,14 @@ fns["checkbox"] = {
 }
 
 module.exports = {
-  bind: function(ele, attr, kue, dir) {
+  bind: function(ele, attr, component, dir) {
     var type = $(ele).attr("type") || "text"
     if (type === "textarea") type = "text"
-    fns[type].bind(ele, attr, kue, dir)
+    fns[type].bind(ele, attr, component, dir)
   },
-  update: function(ele, attr, kue, dir) {
+  update: function(ele, attr, component, dir) {
     var type = $(ele).attr("type") || "text"
     if (type === "textarea") type = "text"
-    fns[type].update(ele, attr, kue, dir)
+    fns[type].update(ele, attr, component, dir)
   }
 }

@@ -57,14 +57,17 @@
     <div>
       ================ School ====================
       <div>
-        school.name: {name}
+        school.name: {name}<br>
+        School.name <input w-model="name">
+        School.isShow <input w-model="isShow" type="checkbox">
+        {isShow}
       </div>
    </div>
   </script>
 
   <script id="user-tpl" type="text/template">
     <div>
-      ================= User ====================
+      ================ User ====================
       <div>{_id}</div>
       <div>{profile.name} @ {profile.desc + " " + education.school}</div>
       <div>{JSON.stringify(profile)}</div>

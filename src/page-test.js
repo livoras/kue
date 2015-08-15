@@ -1,4 +1,5 @@
 var $ = require("./dom")
+window.JSON = require("json3")
 
 module.exports = function(Wat) {
 
@@ -16,6 +17,7 @@ var model = {
   profile: {
     school: {
       name: "SYSU",
+      isShow: false
     },
     name: "jerry",
     desc: "I love you!",
@@ -31,10 +33,13 @@ var model = {
   }
 }
 
+/* User */
 var User = Wat.component("User", {template: userTpl})
 var user = new User({state: model})
 Wat.mount(document.getElementById("content"), user)
 
+/* Profile */
+var User = Wat.component("User", {template: userTpl})
 var Profile = Wat.component("Profile", {template: profileTpl})
 var profile = new Profile({state: model.profile}, {
   parent: user,
@@ -42,6 +47,7 @@ var profile = new Profile({state: model.profile}, {
 })
 Wat.mount(document.getElementById("profile"), profile)
 
+/* School */
 var School = Wat.component("School", {template: schoolTpl})
 var school = new School({state: model.profile.school}, {
   parent: profile,
