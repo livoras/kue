@@ -25,7 +25,7 @@ exports.bindText = function(textNode, component) {
 function watchAllTokens(expressions, component, fn) {
   _.each(expressions, function(expression) {
     _.each(expression.paths, function(path) {
-      component.on(path, fn)
+      component.scope.watch(path, fn)
     })
   })
 }

@@ -14,7 +14,7 @@ logError = (e)->
 gulp.task 'clean', (cb)->
   del.sync('bin')
 
-gulp.task 'kue', -> 
+gulp.task 'kue', ->
   gulp.src('src/kue.js')
       .pipe browserify
         debug: true
@@ -26,7 +26,7 @@ gulp.task 'kue', ->
 
 gulp.task 'test-compile', ->
   gulp.src('test/test.js')
-      .pipe browserify 
+      .pipe browserify
         debug: true
         transform: stringify
           extensions: ['.html'], minify: true
@@ -38,7 +38,7 @@ gulp.task 'test', ['test-compile'], ->
       .pipe mochaPhantomJS({reporter: 'spec'})
       .on 'error', logError
 
-gulp.task 'watch', ->      
+gulp.task 'watch', ->
   livereload.listen()
   gulp.watch 'index.html', ['kue', 'test']
   gulp.watch 'src/**/*', ['kue', 'test']
@@ -48,7 +48,7 @@ gulp.task 'watch', ->
 gulp.task 'build', ->
   del.sync('dist')
   gulp.src("src/kue.js", {})
-      .pipe browserify 
+      .pipe browserify
         debug: true
         transform: stringify
           extensions: ['.html'], minify: true
@@ -59,7 +59,7 @@ gulp.task 'connect', ->
   connect.server()
 
 gulp.task 'default', [
-  'clean' 
+  'clean'
   'kue'
   'connect'
   'test'

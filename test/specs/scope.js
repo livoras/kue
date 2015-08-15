@@ -1,4 +1,4 @@
-var State = require("../../src/state")
+var Scope = require("../../src/scope")
 
 describe("Test states change", function() {
   var model = {
@@ -17,13 +17,12 @@ describe("Test states change", function() {
   var root;
 
   before(function() {
-    root = new State("", model)
-    profile = new State("profile", model.profile, root)
-    school = new State("profile.school", model.profile.school, root)
-    root.subStates.push(profile, school)
+    root = new Scope("", model)
+    profile = new Scope("profile", model.profile, root)
+    school = new Scope("profile.school", model.profile.school, profile)
   })
 
-  it("State should emit own changes", function() {
+  it("Scope should emit own changes", function() {
     var spy = sinon.spy()
     var spy2 = sinon.spy()
     var spy3 = sinon.spy()
@@ -40,7 +39,7 @@ describe("Test states change", function() {
       }
     })
 
-    root.model.profile.school.name.should.be.equal("Jerry")
+    root.state.profile.school.name.should.be.equal("Jerry")
     spy.should.have.been.calledOnce
     spy2.should.have.been.calledOnce
     spy3.should.have.been.calledOnce
@@ -78,8 +77,7 @@ describe("Test states change", function() {
   })
 
   it("Deeper changes", function() {
-    var school2 = new State("profile.school", profile.school, root)
-    profile.subStates.push(school2)
+    var school2 = new Scope("profile.school", profile.school, profile)
     var spy1 = sinon.spy()
     var spy2 = sinon.spy()
     var spy3 = sinon.spy()

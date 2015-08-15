@@ -2,21 +2,26 @@ var _ = require("./util")
 var EventEmitter = require("./event-emitter")
 var objectPath = require("./object-path")
 
-function State(path, model, $root) {
+function Scope(path, state, parentScope) {
   EventEmitter.call(this)
-  this.$root = $root || this
+  if (parentScope && parentScope.$root) {
+    this.$root = parentScope.$root
+    parentScope.subScopes.push(this)
+  } else {
+    this.$root = this
+  }
   this.currentPath = path
-  this.model = model
+  this.state = state
   this.watchPaths = this.events
-  this.subStates = []
+  this.subScopes = []
 }
 
-var pro = _.extend(State.prototype, EventEmitter.prototype)
+var pro = _.extend(Scope.prototype, EventEmitter.prototype)
 
-pro.update = function(newModel) {
+pro.update = function(newState) {
   var self = this
-  var paths = objectPath.makePathsOfObj(newModel)
-  _.extend(true, this.model, newModel)
+  var paths = objectPath.makePathsOfObj(newState)
+  _.extend(true, this.state, newState)
   _.each(paths, function(path) {
     var fullPath = objectPath.join([self.currentPath, path])
     self.$root.deliverChange(fullPath)
@@ -26,7 +31,7 @@ pro.update = function(newModel) {
 pro.deliverChange = function(changePath) {
   if (!isSubPath(this.currentPath, changePath)) return
   this.emitCurrentWatchers(changePath)
-  this.deliverChangeToSubStates(changePath)
+  this.deliverChangeToSubScopes(changePath)
 }
 
 pro.emitCurrentWatchers = function(changePath) {
@@ -43,8 +48,17 @@ pro.watch = function(path, fn) {
   this.on(watchPath, fn)
 }
 
-pro.deliverChangeToSubStates = function(changePath) {
-  _.each(this.subStates, function(state) {
+pro.removeSubScope = function(scope) {
+  var scopes = this.subScopes
+  for(var i = 0, len = scopes; i < len; i++) {
+    if (scopes[i] === scope) {
+      return scopes.splice(i, 1)
+    }
+  }
+}
+
+pro.deliverChangeToSubScopes = function(changePath) {
+  _.each(this.subScopes, function(state) {
     if (isSubPath(state.currentPath, changePath)) {
       state.deliverChange(changePath)
     }
@@ -55,4 +69,4 @@ function isSubPath(parentPath, childPath) {
   return _.startsWith(childPath, parentPath)
 }
 
-module.exports = State
+module.exports =Scope

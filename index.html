@@ -25,8 +25,9 @@
       <input type="checkbox" name="name" k-model="isShow()">
       <input type="checkbox" name="name" k-model="isOutLine()">
   </div>-->
-  <div id="content">
-  </div>
+  <div id="content"></div>
+  <div id="profile"></div>
+  <div id="school"></div>
 
   <script id="todo-list-tpl" type="text/template">
     <div>
@@ -42,8 +43,28 @@
     <div> {_id}# {content} </div>
   </script>
 
+  <script id="profile-tpl" type="text/template">
+    <div>
+      ================ Profile ====================
+      <div>
+        school.name: {school.name}
+        school: {JSON.stringify(school)}
+      </div>
+   </div>
+  </script>
+
+  <script id="school-tpl" type="text/template">
+    <div>
+      ================ School ====================
+      <div>
+        school.name: {name}
+      </div>
+   </div>
+  </script>
+
   <script id="user-tpl" type="text/template">
     <div>
+      ================= User ====================
       <div>{_id}</div>
       <div>{profile.name} @ {profile.desc + " " + education.school}</div>
       <div>{JSON.stringify(profile)}</div>
