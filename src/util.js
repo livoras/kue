@@ -73,6 +73,11 @@ _.of = function(obj, fn) {
   }
 }
 
+_.startsWith = function(str, searchStr, pos) {
+  pos = pos || 0
+  return str.indexOf(searchStr, pos) === pos;
+}
+
 /**
  * Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError.
  * steal from underscore: http://underscorejs.org/docs/underscore.html

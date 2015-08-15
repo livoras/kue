@@ -14,8 +14,12 @@ var componentMethods = {
     var self = this
     _.extend(true, self.state, state)
     _.each(paths, function(path) {
-      var eventName = objectPath.join([self.currentPath, path])
-      self.emit(eventName)
+      // TODO: emit and on event correponse
+      var steps = objectPath.makeStepsFromPath(path)
+      _.each(steps, function(step) {
+        var eventName = objectPath.join([self.currentPath, step])
+        self.emit(eventName)
+      })
     })
   }
 }
