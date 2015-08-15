@@ -19,6 +19,14 @@ _.isArray = function(arr) {
   return Object.prototype.toString.call(arr) === '[object Array]'
 }
 
+_.isString = function(str) {
+  return Object.prototype.toString.call(str) === '[object String]'
+}
+
+_.isObject = function(obj) {
+  return Object.prototype.toString.call(obj) === '[object Object]'
+}
+
 _.each = function(arr, fn) {
   for (var i = 0, len = arr.length; i < len; i++) {
     fn(arr[i], i)
@@ -31,6 +39,38 @@ _.isUndefined = function(obj) {
 
 _.trim = function(str) {
   return str.replace(/(^\s+)|\s+$/g, "")
+}
+
+_.extend = function(isDeep) {
+  var args = arguments
+  var i = (isDeep === true) ? 2 : 1
+  var dest = arguments[i - 1]
+  for(var len = args.length; i < len; i++) {
+    var obj = args[i]
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        if (bothAreObject(dest[key], obj[key])) {
+          _.extend(dest[key], obj[key])
+        } else {
+          dest[key] = obj[key]
+        }
+      }
+    }
+  }
+  return dest
+}
+
+function bothAreObject(obj1, obj2) {
+  return (_.isObject(obj1) || _.isArray(obj1))
+         && (_.isObject(obj2) || _.isArray(obj2))
+}
+
+_.of = function(obj, fn) {
+  for(var key in obj) {
+    if(obj.hasOwnProperty(key)) {
+      fn(key, obj[key])
+    }
+  }
 }
 
 /**

@@ -21,3 +21,30 @@ exports.makeStepsFromPath = function(path) {
   })
   return steps
 }
+
+exports.makePathsOfObj = function(obj) {
+  var paths = []
+  _.of(obj, processKey)
+  function processKey(key, obj, prevPath) {
+    var currentPath = exports.join([prevPath, key])
+    if (_.isObject(obj)) {
+      _.of(obj, function(key, obj) {
+        processKey(key, obj, currentPath)
+      })
+    } else {
+      paths.push(currentPath)
+    }
+  }
+  return paths
+}
+
+exports.join = function(paths) {
+  var allPath = ""
+  _.each(paths, function(path, i) {
+    if (_.isUndefined(path) || (_.isString(path) && path.length === 0)) return
+    allPath = (allPath.length === 0)
+      ? path
+      : allPath + ("." + path)
+  })
+  return allPath
+}

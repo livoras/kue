@@ -1,18 +1,41 @@
 var _ = require("./util")
 var compiler = require("./compiler")
-var obserable = require("./obserable")
+var objectPath = require("./object-path")
 var parser = require("./parser")
 var $ = require("./dom")
 var components = {}
+var EventEmitter = require("./event-emitter")
 
 function Wat(options) {}
 
+var componentMethods = {
+  update: function(state) {
+    var paths = objectPath.makePathsOfObj(state)
+    var self = this
+    _.extend(true, self.state, state)
+    _.each(paths, function(path) {
+      var eventName = objectPath.join([self.currentPath, path])
+      self.emit(eventName)
+    })
+  }
+}
+
+var defaultComponentConfig = {
+  currentPath: ""
+}
+
 Wat.component = function(componentName, componentOpts) {
-  var Component = function(options) {
+  var Component = function(options, config) {
+    EventEmitter.call(this)
+    config = config || _.extend({}, defaultComponentConfig)
+    this.currentPath = config.currentPath
     this.el = $.getDOMNodeFromTemplate(componentOpts.template)
     this.state = options.state
     compiler.compile(this.el, this)
   }
+  var pro = Component.prototype
+  _.extend(pro, EventEmitter.prototype)
+  _.extend(pro, componentMethods)
   components[componentName] = Component
   return Component
 }
@@ -48,10 +71,32 @@ var user = {
 
 var User = Wat.component("User", { template: userTpl })
 
+var user = new User({ state: user })
+
+window.user = user
+
 Wat.mount(
   document.getElementById("content"),
-  new User({ state: user })
+  user
 )
+
+window.u = function() {
+  user.update({
+    education: {
+      school: "HuaGong"
+    },
+    profile: {
+      girls: {
+        0: {
+          name: "Fuck Lucy!"
+        },
+        1: {
+          name: "Fuck Lily!"
+        }
+      }
+    }
+  })
+}
 
 // ================== TodoList ===============
 var todoListTpl = $(document.getElementById("todo-list-tpl")).html()

@@ -6,9 +6,6 @@ var directives = require("./directives")
 exports.bindText = function(textNode, component) {
   var text = textNode.textContent || textNode.nodeValue // fuck IE7, 8
   var expressions = parser.parse(text)
-  if (expressions.length !== 0) {
-    console.log(expressions)
-  }
   function writeResult() {
     var textTpl = text
     _.each(expressions, function(expression) {
@@ -22,24 +19,15 @@ exports.bindText = function(textNode, component) {
     }
   }
   writeResult()
-  //watchAllTokens(expressions, component, writeResult)
+  watchAllTokens(expressions, component, writeResult)
 }
 
-function watchAllTokens(expressions, kue, fn) {
-  var vm = kue.vm
+function watchAllTokens(expressions, component, fn) {
   _.each(expressions, function(expression) {
-    _.each(expression.tokens, function(token) {
-      watchToken(token)
+    _.each(expression.paths, function(path) {
+      component.on(path, fn)
     })
   })
-
-  function watchToken(token) {
-    var obserableKey = vm[token]
-    if (_.isUndefined(obserableKey)) return
-    if (_.isObserable(obserableKey)) {
-      obserableKey.$$.watch(fn)
-    }
-  }
 }
 
 exports.bindDir = function(attr, node, kue) {
