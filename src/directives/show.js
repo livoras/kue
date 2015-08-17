@@ -1,10 +1,11 @@
 var $ = require("../dom")
 
 module.exports = {
-  bind: function(ele, attr, kue) {
-    this.update(ele, attr, kue)
+  bind: function(ele, attr, component) {
+    this.update(ele, attr, component)
   },
-  update: function(ele, attr, kue) {
-    $(ele).css("display", kue.vm[attr.value]() ? "block": "none")
+  update: function(ele, attr, component) {
+    var isShow = component.scope.state[attr.value]
+    $(ele).css("display", isShow ? "block": "none")
   }
 }
