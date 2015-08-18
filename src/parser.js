@@ -89,14 +89,14 @@ exports.parseTokensAndPaths = function(exp) {
 }
 
 
-exports.exec = function(expression, model) {
+exports.exec = function(expression, scope) {
   var args = []
   var tokens = expression.tokens
   _.each(tokens, function(token) {
-    args.push(model[token])
+    args.push(scope.get(token))
   })
   var exp = "return " + expression.exp + ";"
-  return (new Function(tokens, exp)).apply(model, args)
+  return (new Function(tokens, exp)).apply(scope, args)
 }
 
 exports.parseDirective = function(value) {

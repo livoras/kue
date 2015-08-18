@@ -33,20 +33,21 @@ var model = {
   }
 }
 
-/* User */
+/* Component */
 var Profile = Wat.component("Profile", {template: profileTpl})
 var User = Wat.component("User", {template: userTpl})
 var School = Wat.component("School", {template: schoolTpl})
 
 var user = new User({state: model})
-Wat.mount(document.getElementById("content"), user)
+console.log(user)
+Wat.render(document.getElementById("content"), user)
 
 /* Profile */
 // var profile = new Profile({state: model.profile}, {
 //   parent: user,
 //   currentPath: "profile"
 // })
-//Wat.mount(document.getElementById("profile"), profile)
+//Wat.render(document.getElementById("profile"), profile)
 
 /* School */
 // var school = new School({state: model.profile.school}, {
@@ -57,6 +58,7 @@ Wat.mount(document.getElementById("content"), user)
 
 window.u = function(name) {
   user.update({
+    _id: "fuck",
     education: {
       school: "HuaGong"
     },
@@ -71,7 +73,6 @@ window.u = function(name) {
       }
     }
   })
-  school.update({name: name || "jerry"})
 }
 
 }

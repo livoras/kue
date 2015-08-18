@@ -43,7 +43,7 @@ Wat.component = function(componentName, componentOpts) {
   return Component
 }
 
-Wat.mount = function(el, component) {
+Wat.render = function(el, component) {
   el.innerHTML = ""
   el.appendChild(component.el)
 }

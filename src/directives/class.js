@@ -15,7 +15,7 @@ module.exports = {
           exp: dir[className],
           tokens: tokensAndPaths.tokens,
           paths: tokensAndPaths.paths
-      }, component.state)
+      }, component.scope)
       if (shouldHasClass) {
         $el.addClass(className)
       } else {

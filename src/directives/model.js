@@ -16,7 +16,10 @@ fns["text"] = {
   },
   update: function(ele, attr, component, dir) {
     var name = dir.replace(/\(\)/g, "")
-    ele.value = component.scope.state[name]
+    var newVal = component.scope.state[name]
+    if (newVal !== ele.value) {
+      ele.value = newVal
+    }
   }
 }
 

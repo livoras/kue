@@ -65,6 +65,10 @@ pro.deliverChangeToSubScopes = function(changePath) {
   })
 }
 
+pro.get = function(token) {
+  return this.state[token]
+}
+
 function isSubPath(parentPath, childPath) {
   return _.startsWith(childPath, parentPath)
 }

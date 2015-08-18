@@ -9,7 +9,7 @@ exports.bindText = function(textNode, component) {
   function writeResult() {
     var textTpl = text
     _.each(expressions, function(expression) {
-      var result = parser.exec(expression, component.state)
+      var result = parser.exec(expression, component.scope)
       textTpl = textTpl.replace(expression.rawExp, result)
     })
     if (textNode.nodeValue) {

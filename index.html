@@ -43,14 +43,17 @@
     <div> {_id}# {content} </div>
   </script>
 
+  <!-- =========================Test============================-->
   <script id="profile-tpl" type="text/template">
     <div>
-      ================ Profile ====================
+      ================ Profile : {_id} ====================
       <div>
         school.name: {school.name}
         school: {JSON.stringify(school)}
       </div>
+      <hr>
       <div w-component="School:school">
+      <hr>
    </div>
   </script>
 
