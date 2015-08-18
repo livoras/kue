@@ -3,10 +3,9 @@ var compiler = require("./compiler")
 var objectPath = require("./object-path")
 var parser = require("./parser")
 var $ = require("./dom")
-var components = {}
 var EventEmitter = require("./event-emitter")
 var Scope = require("./scope")
-
+var components = require("./common").components
 
 function Wat(options) {}
 

@@ -50,6 +50,7 @@
         school.name: {school.name}
         school: {JSON.stringify(school)}
       </div>
+      <div w-component="School:school">
    </div>
   </script>
 
@@ -62,6 +63,9 @@
         School.isShow <input w-model="isShow" type="checkbox">
         {isShow}
         <div w-show="isShow">show if isShow is true!</div>
+        <br>
+        <textarea w-model="name"
+                  w-class="outline: isShow, border: !isShow"></textarea>
       </div>
    </div>
   </script>
@@ -75,6 +79,9 @@
       <div>
         {profile.girls[0].name + " #### " + profile.avatars[0]}
       </div>
+      <hr>
+      <div w-component="Profile:profile"></div>
+      <hr>
     </div>
   </script>
 

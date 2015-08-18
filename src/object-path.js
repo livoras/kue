@@ -48,3 +48,12 @@ exports.join = function(paths) {
   })
   return allPath
 }
+
+exports.getObjectByPath = function(obj, path) {
+  var props = path.split(".")
+  var currentObj = obj
+  _.each(props, function(prop) {
+    currentObj = currentObj[prop]
+  })
+  return currentObj
+}

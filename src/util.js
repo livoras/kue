@@ -109,3 +109,12 @@ _.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'],
     return Object.prototype.toString.call(obj) === '[object ' + name + ']';
   };
 });
+
+_.error = function(msg) {
+  throw new Error(msg)
+}
+
+_.nextTick = function(fn, time) {
+  time = time || 0
+  setTimeout(fn, time)
+}

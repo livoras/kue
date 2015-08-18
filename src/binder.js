@@ -40,6 +40,7 @@ exports.bindDir = function(attr, node, component) {
   var paths = getTokensAndPathsFromDirective(directive).paths
   var dirObj = directives[dirName]
   dirObj.bind(node, attr, component, directive)
+  if (inNotUpdateList(dirName)) return
   _.each(paths, function(path) {
     component.scope.watch(path, function() {
       dirObj.update(node, attr, component, directive)
@@ -66,6 +67,16 @@ function getDirName(attr) {
     return results[1]
   }
   return void 666
+}
+
+function inNotUpdateList(name) {
+  var list = ["component"]
+  for (var i = 0, len = list.length; i < len; i++) {
+    if (list[i] === name) {
+      return true
+    }
+  }
+  return false
 }
 
 exports.getTokensAndPathsFromDirective = getTokensAndPathsFromDirective

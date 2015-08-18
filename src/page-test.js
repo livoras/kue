@@ -34,28 +34,26 @@ var model = {
 }
 
 /* User */
+var Profile = Wat.component("Profile", {template: profileTpl})
 var User = Wat.component("User", {template: userTpl})
+var School = Wat.component("School", {template: schoolTpl})
+
 var user = new User({state: model})
 Wat.mount(document.getElementById("content"), user)
 
 /* Profile */
-var User = Wat.component("User", {template: userTpl})
-var Profile = Wat.component("Profile", {template: profileTpl})
-var profile = new Profile({state: model.profile}, {
-  parent: user,
-  currentPath: "profile"
-})
-Wat.mount(document.getElementById("profile"), profile)
+// var profile = new Profile({state: model.profile}, {
+//   parent: user,
+//   currentPath: "profile"
+// })
+//Wat.mount(document.getElementById("profile"), profile)
 
 /* School */
-var School = Wat.component("School", {template: schoolTpl})
-var school = new School({state: model.profile.school}, {
-  parent: profile,
-  currentPath: "profile.school"
-})
-Wat.mount(document.getElementById("school"), school)
-
-console.log(user, profile, school)
+// var school = new School({state: model.profile.school}, {
+//   parent: profile,
+//   currentPath: "profile.school"
+// })
+// Wat.mount(document.getElementById("school"), school)
 
 window.u = function(name) {
   user.update({
