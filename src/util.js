@@ -16,15 +16,19 @@ _.map = function(arr, fn) {
 }
 
 _.isArray = function(arr) {
-  return Object.prototype.toString.call(arr) === '[object Array]'
+  return _.toString(arr) === '[object Array]'
 }
 
 _.isString = function(str) {
-  return Object.prototype.toString.call(str) === '[object String]'
+  return _.toString(str) === '[object String]'
 }
 
 _.isObject = function(obj) {
-  return Object.prototype.toString.call(obj) === '[object Object]'
+  return _.toString(obj) === '[object Object]'
+}
+
+_.toString = function(obj) {
+  return Object.prototype.toString.call(obj)
 }
 
 _.each = function(arr, fn) {
