@@ -8,9 +8,9 @@ describe("Test states change", function() {
         name: "JD"
       }
     },
-    avatar: [
+    avatars: [
       {url: "/pics/1"},
-      {url: "/pics/2"},
+      {url: "/pics/2"}
     ]
   }
 
@@ -93,5 +93,31 @@ describe("Test states change", function() {
     spy2.should.have.been.calledOnce
     spy3.should.have.been.calledOnce
     spy4.should.have.been.calledOnce
+  })
+
+  it("Updating full array won't loop in deep", function() {
+    var spy1 = sinon.spy()
+    var avatars = new Scope("avatars", model.avatars, root)
+    root.watch("avatars.0.url", spy1)
+    avatars.update({
+      0: {url: "goodurl"}
+    })
+    model.avatars[0].url.should.be.equal("goodurl")
+    spy1.should.have.been.calledOnce
+
+    var spy2 = sinon.spy()
+    root.watch("avatars", spy2)
+    root.update({
+      avatars: [
+        {url: "goodurl1"},
+        {url: "goodurl2"}
+      ]
+    })
+    model.avatars.should.be.deep.equal([
+        {url: "goodurl1"},
+        {url: "goodurl2"}
+    ])
+    spy1.should.have.been.calledOnce
+    spy2.should.have.been.calledOnce
   })
 })

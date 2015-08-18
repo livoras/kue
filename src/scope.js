@@ -21,7 +21,7 @@ var pro = _.extend(Scope.prototype, EventEmitter.prototype)
 pro.update = function(newState) {
   var self = this
   var paths = objectPath.makePathsOfObj(newState)
-  _.extend(true, this.state, newState)
+  _.update(this.state, newState)
   _.each(paths, function(path) {
     var fullPath = objectPath.join([self.currentPath, path])
     self.$root.deliverChange(fullPath)

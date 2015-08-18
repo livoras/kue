@@ -60,9 +60,27 @@ _.extend = function(isDeep) {
   return dest
 }
 
-function bothAreObject(obj1, obj2) {
+function bothAreObjectOrArray(obj1, obj2) {
   return (!_.isUndefined(obj1) && (_.isObject(obj1) || _.isArray(obj1) )) &&
          (!_.isUndefined(obj2) && (_.isObject(obj2) || _.isArray(obj2)))
+}
+
+_.update = function(dest, src) {
+  for (var key in src) {
+    if (src.hasOwnProperty(key)) {
+      if (bothAreObject(dest[key], src[key])) {
+        _.update(dest[key], src[key])
+      } else {
+        dest[key] = src[key]
+      }
+    }
+  }
+  return dest
+}
+
+function bothAreObject(obj1, obj2) {
+  return (!_.isUndefined(obj1) && _.isObject(obj1)) &&
+         (!_.isUndefined(obj2) && _.isObject(obj2))
 }
 
 _.of = function(obj, fn) {
