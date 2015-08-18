@@ -1,5 +1,6 @@
 var parser = require("../../src/parser")
 var config = require("../../src/config")
+var Scope = require("../../src/scope")
 
 describe("Test parser", function() {
 
@@ -51,14 +52,12 @@ describe("Test parser", function() {
 
   it("Execute an expression.", function() {
     parser.exec({
-      exp: "this.lucy + name() + 1",
-      tokens: ["name"]
-    }, {
-      name: function() {
-        return "Jerry!"
-      },
+      exp: "lucy + name + 1",
+      tokens: ["name", "lucy"]
+    }, new Scope("", {
+      name: "Jerry!",
       lucy: "good"
-    }).should.be.equal("goodJerry!1")
+    })).should.be.equal("goodJerry!1")
   })
 
   it("Parse with custom open and close tag.", function() {
