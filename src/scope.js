@@ -66,11 +66,15 @@ pro.deliverChangeToSubScopes = function(changePath) {
 }
 
 pro.get = function(token) {
-  return this.state[token]
+  return this.state[token] || this.extra[token] || ""
+}
+
+pro.getObjectByPath = function(path) {
+  return objectPath.getObjectByPath(this.state, path)
 }
 
 function isSubPath(parentPath, childPath) {
   return _.startsWith(childPath, parentPath)
 }
 
-module.exports =Scope
+module.exports = Scope

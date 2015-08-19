@@ -53,6 +53,14 @@ var $ = function(dom) {
       } else {
         this.el.innerHTML = content
       }
+    },
+    remove: function() {
+      this.el.parentNode.removeChild(this.el)
+      return this
+    },
+    before: function(node) {
+      this.el.parentNode.insertBefore(node, this.el)
+      return this
     }
   }
 }
@@ -61,6 +69,14 @@ $.getDOMNodeFromTemplate = function(template) {
   var div = document.createElement("div")
   div.innerHTML = template
   return div.children[0]
+}
+
+$.frag = function() {
+  return document.createDocumentFragment()
+}
+
+$.ele = function(eleName) {
+  return document.createElement(eleName)
 }
 
 module.exports = $

@@ -1,10 +1,14 @@
 var _ = require("./util")
 var obserable = require("./obserable")
 var binder = require("./binder")
+var $ = require("./dom")
+var config = require("./config")
+var prefix = config.directivePrefix
 
 function compileNode(node, component) {
   if (node.nodeType === 1) {
     compileAttr(node, component)
+    if ($(node).attr(prefix + "-repeat")) return
     _.each(node.childNodes, function(node) {
       compileNode(node, component)
     })

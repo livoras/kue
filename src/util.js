@@ -83,7 +83,7 @@ _.update = function(dest, src) {
 }
 
 function bothAreObject(obj1, obj2) {
-  return (!_.isUndefined(obj1) && _.isObject(obj1)) &&
+  return (!_.isUndefined(obj1) && (_.isObject(obj1) || _.isArray(obj1))) &&
          (!_.isUndefined(obj2) && _.isObject(obj2))
 }
 

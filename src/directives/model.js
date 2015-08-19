@@ -1,4 +1,5 @@
 var $ = require("../dom")
+var objectPath = require("../object-path")
 
 var fns = {}
 
@@ -9,14 +10,14 @@ fns["text"] = {
     $(ele).on("keyup", updateVM)
     function updateVM() {
       var name = dir.replace(/\(\)/g, "")
-      var state = {}
-      state[name] = ele.value
-      component.scope.update(state)
+      var obj = objectPath.makeObjectByPath(name, ele.value)
+      component.scope.update(obj)
     }
   },
   update: function(ele, attr, component, dir) {
     var name = dir.replace(/\(\)/g, "")
-    var newVal = component.scope.state[name]
+    var path = objectPath.makePathFromRawPath(name)
+    var newVal = component.scope.getObjectByPath(path)
     if (newVal !== ele.value) {
       ele.value = newVal
     }

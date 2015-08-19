@@ -24,10 +24,7 @@
                       outline: !isShow() && isOutLine()"/>
       <input type="checkbox" name="name" k-model="isShow()">
       <input type="checkbox" name="name" k-model="isOutLine()">
-  </div>-->
-  <div id="content"></div>
-  <div id="profile"></div>
-  <div id="school"></div>
+  </div>
 
   <script id="todo-list-tpl" type="text/template">
     <div>
@@ -41,7 +38,11 @@
 
   <script id="todo-item-tpl" type="text/template">
     <div> {_id}# {content} </div>
-  </script>
+  </script>-->
+
+  <div id="content">
+    
+  </div>
 
   <!-- =========================Test============================-->
   <script id="profile-tpl" type="text/template">
@@ -51,6 +52,7 @@
         school.name: {school.name}
         school: {JSON.stringify(school)}
       </div>
+      gril.0.name: <input type="text" name="name" w-model="girls[0].name">
       <hr>
       <div w-component="School:school">
       <hr>
@@ -85,6 +87,9 @@
       <hr>
       <div w-component="Profile:profile"></div>
       <hr>
+      <div w-repeat="profile.girls">
+        <div>#{$index}: {name}</div>
+      </div>
     </div>
   </script>
 

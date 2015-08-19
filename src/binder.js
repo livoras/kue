@@ -70,7 +70,7 @@ function getDirName(attr) {
 }
 
 function inNotUpdateList(name) {
-  var list = ["component"]
+  var list = ["component", "repeat"]
   for (var i = 0, len = list.length; i < len; i++) {
     if (list[i] === name) {
       return true

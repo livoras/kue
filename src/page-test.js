@@ -73,6 +73,7 @@ window.u = function(name) {
       }
     }
   })
+  user.updateArray("profil.girls").slice(0, 1)
 }
 
 }

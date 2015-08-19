@@ -26,7 +26,7 @@ exports.getExpFromRawExp = function(rawExp) {
  * Steal from Vue.js:
  * https://github.com/yyx990803/vue/blob/dev/src/parsers/expression.js
  */
-var PATH_REG = /[_\w][_$\w\d\.\[\]]+/g
+var PATH_REG = /[_\w\$][_\$\w\d\.\[\]]+/g
 var ignoreKeywords =
   'Math,Date,this,true,false,null,undefined,Infinity,NaN,' +
   'isNaN,isFinite,decodeURI,decodeURIComponent,encodeURI,' +
@@ -100,10 +100,11 @@ exports.exec = function(expression, scope) {
 }
 
 exports.parseDirective = function(value) {
-  var STRING_DIR_REG = /^[_$\w][_$\w\d\s\(\)]*$/
+  var STRING_DIR_REG = /^[_$\w][_$\w\d\s\(\)\.\[\]]*$/
   var value = _.trim(value)
   if (value.length === 0 || STRING_DIR_REG.test(value)) {
-    return value
+    //return value
+    return objectPath.makePathFromRawPath(value)
   } else {
     var ret = {}
     _.each(value.split(","), function(map) {

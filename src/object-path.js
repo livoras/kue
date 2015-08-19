@@ -1,7 +1,7 @@
 var _ = require("./util")
 
 exports.getFirstProp = function(path) {
-  var FIRST_PROP_REG = /(^[\w_][\w$_]+)([\.\[\]])?/
+  var FIRST_PROP_REG = /(^[\w_\$][\w\$_]+)([\.\[\]])?/
   return path.match(FIRST_PROP_REG)[1]
 }
 
@@ -56,4 +56,19 @@ exports.getObjectByPath = function(obj, path) {
     currentObj = currentObj[prop]
   })
   return currentObj
+}
+
+exports.makeObjectByPath = function(path, value) {
+  var rootObj = {}
+  var obj = rootObj
+  var props = path.split(".")
+  var lastIdx = props.length - 1
+  _.each(props, function(prop, i) {
+    if (i !== lastIdx) {
+      obj = obj[prop] = {}
+    } else {
+      obj[prop] = value
+    }
+  })
+  return rootObj
 }

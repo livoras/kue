@@ -11,7 +11,7 @@ module.exports = {
       _.error("Component `" + componentName + "` is not found.")
     }
     var Component = components[componentName]
-    var state = objectPath.getObjectByPath(component.state, stateName)
+    var state = component.scope.getObjectByPath(stateName)
     var subComponent = new Component({state: state}, {
       parent: component,
       currentPath: objectPath.join([
