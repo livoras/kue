@@ -61,6 +61,7 @@ exports.getObjectByPath = function(obj, path) {
 exports.makeObjectByPath = function(path, value) {
   var rootObj = {}
   var obj = rootObj
+  path = exports.makePathFromRawPath(path)
   var props = path.split(".")
   var lastIdx = props.length - 1
   _.each(props, function(prop, i) {

@@ -41,13 +41,13 @@
   </script>-->
 
   <div id="content">
-    
+
   </div>
 
   <!-- =========================Test============================-->
   <script id="profile-tpl" type="text/template">
     <div>
-      ================ Profile : {_id} ====================
+      ================ Profile : {_id} - {education.school} ====================
       <div>
         school.name: {school.name}
         school: {JSON.stringify(school)}
@@ -71,6 +71,7 @@
         <br>
         <textarea w-model="name"
                   w-class="outline: isShow, border: !isShow"></textarea>
+        <textarea w-model="education.school"></textarea>
       </div>
    </div>
   </script>
@@ -90,6 +91,7 @@
       <div w-repeat="profile.girls">
         <div>#{$index}: {name}</div>
       </div>
+      <input type="text" w-model="profile.girls[0].name">
     </div>
   </script>
 

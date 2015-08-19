@@ -7,6 +7,7 @@ function Scope(path, state, parentScope) {
   this.state = state
   this.watchPaths = {} // for unmouting
   this.subScopes = []
+  this.parentScope = parentScope
 
   if (parentScope && parentScope.$root && path) {
     this.$root = parentScope.$root
@@ -39,7 +40,8 @@ pro.broadcast = function(changePath) {
 }
 
 pro.watch = function(path, fn) {
-  var watchPath = objectPath.join([this.currentPath, path])
+  var scopeAndPath = this.getScopeAndWatchPath(path)
+  var watchPath = scopeAndPath.watchPath
   var pathLocalStore = this.watchPaths[path]
   if (pathLocalStore) {
     pathLocalStore.push(fn)
@@ -47,6 +49,28 @@ pro.watch = function(path, fn) {
     this.watchPaths[path] = [fn]
   }
   this.$root.emitter.on(watchPath, fn)
+}
+
+pro.getScopeAndWatchPath = function(path) {
+  var firstProp = objectPath.getFirstProp(path)
+  var scope = this.getRightScopeByToken(firstProp)
+  var watchPath = objectPath.join([scope.currentPath, path])
+  return {
+    scope: scope,
+    watchPath: watchPath
+  }
+}
+
+pro.getRightScopeByToken = function(token) {
+  var scope = this
+  while(scope.currentPath != ""
+        && _.isUndefined(scope.state[token])
+        && _.isUndefined(scope.extra[token])) {
+    scope = scope.parentScope
+  }
+  return !_.isUndefined(scope.state[token])
+    ? scope
+    : this
 }
 
 pro.removeSubScope = function(scope) {
@@ -60,7 +84,10 @@ pro.removeSubScope = function(scope) {
 }
 
 pro.get = function(token) {
-  return this.state[token] || this.extra[token] || ""
+  var scope = this.getRightScopeByToken(token)
+  return _.isUndefined(scope.state[token])
+    ? ""
+    : scope.state[token]
 }
 
 pro.getObjectByPath = function(path) {

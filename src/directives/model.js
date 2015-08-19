@@ -10,14 +10,19 @@ fns["text"] = {
     $(ele).on("keyup", updateVM)
     function updateVM() {
       var name = dir.replace(/\(\)/g, "")
-      var obj = objectPath.makeObjectByPath(name, ele.value)
-      component.scope.update(obj)
+      var path = objectPath.makePathFromRawPath(name)
+      var obj = objectPath.makeObjectByPath(path, ele.value)
+      var firstProp = objectPath.getFirstProp(path)
+      var scope = component.scope.getRightScopeByToken(firstProp)
+      scope.update(obj)
     }
   },
   update: function(ele, attr, component, dir) {
     var name = dir.replace(/\(\)/g, "")
     var path = objectPath.makePathFromRawPath(name)
-    var newVal = component.scope.getObjectByPath(path)
+    var firstProp = objectPath.getFirstProp(path)
+    var scope = component.scope.getRightScopeByToken(firstProp)
+    var newVal = scope.getObjectByPath(path)
     if (newVal !== ele.value) {
       ele.value = newVal
     }
