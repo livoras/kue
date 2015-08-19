@@ -3,20 +3,21 @@ var EventEmitter = require("./event-emitter")
 var objectPath = require("./object-path")
 
 function Scope(path, state, parentScope) {
-  EventEmitter.call(this)
-  if (parentScope && parentScope.$root) {
+  this.currentPath = path
+  this.state = state
+  this.watchPaths = {} // for unmouting
+  this.subScopes = []
+
+  if (parentScope && parentScope.$root && path) {
     this.$root = parentScope.$root
     parentScope.subScopes.push(this)
   } else {
     this.$root = this
+    this.emitter = new EventEmitter
   }
-  this.currentPath = path
-  this.state = state
-  this.watchPaths = this.events
-  this.subScopes = []
 }
 
-var pro = _.extend(Scope.prototype, EventEmitter.prototype)
+var pro = Scope.prototype
 
 pro.update = function(newState) {
   var self = this
@@ -24,31 +25,32 @@ pro.update = function(newState) {
   _.update(this.state, newState)
   _.each(paths, function(path) {
     var fullPath = objectPath.join([self.currentPath, path])
-    self.$root.deliverChange(fullPath)
+    self.$root.broadcast(fullPath)
   })
 }
 
-pro.deliverChange = function(changePath) {
-  if (!isSubPath(this.currentPath, changePath)) return
-  this.emitCurrentWatchers(changePath)
-  this.deliverChangeToSubScopes(changePath)
-}
-
-pro.emitCurrentWatchers = function(changePath) {
-  var watchPaths = this.watchPaths
-  for (var watchPath in watchPaths) {
-    if(isSubPath(watchPath, changePath)) {
-      this.emit(watchPath)
-    }
-  }
+pro.broadcast = function(changePath) {
+  if (!this.emitter) return _.error("I am not a root!")
+  var steps = objectPath.makeStepsFromPath(changePath)
+  var self = this
+  _.each(steps, function(path) {
+    self.emitter.emit(path)
+  })
 }
 
 pro.watch = function(path, fn) {
   var watchPath = objectPath.join([this.currentPath, path])
-  this.on(watchPath, fn)
+  var pathLocalStore = this.watchPaths[path]
+  if (pathLocalStore) {
+    pathLocalStore.push(fn)
+  } else {
+    this.watchPaths[path] = [fn]
+  }
+  this.$root.emitter.on(watchPath, fn)
 }
 
 pro.removeSubScope = function(scope) {
+  // TODO: unwatch when remove scope
   var scopes = this.subScopes
   for(var i = 0, len = scopes; i < len; i++) {
     if (scopes[i] === scope) {
@@ -57,24 +59,12 @@ pro.removeSubScope = function(scope) {
   }
 }
 
-pro.deliverChangeToSubScopes = function(changePath) {
-  _.each(this.subScopes, function(state) {
-    if (isSubPath(state.currentPath, changePath)) {
-      state.deliverChange(changePath)
-    }
-  })
-}
-
 pro.get = function(token) {
   return this.state[token] || this.extra[token] || ""
 }
 
 pro.getObjectByPath = function(path) {
   return objectPath.getObjectByPath(this.state, path)
-}
-
-function isSubPath(parentPath, childPath) {
-  return _.startsWith(childPath, parentPath)
 }
 
 module.exports = Scope
