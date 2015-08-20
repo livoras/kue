@@ -39,22 +39,8 @@ var User = Wat.component("User", {template: userTpl})
 var School = Wat.component("School", {template: schoolTpl})
 
 var user = new User({state: model})
-console.log(user)
 Wat.render(document.getElementById("content"), user)
-
-/* Profile */
-// var profile = new Profile({state: model.profile}, {
-//   parent: user,
-//   currentPath: "profile"
-// })
-//Wat.render(document.getElementById("profile"), profile)
-
-/* School */
-// var school = new School({state: model.profile.school}, {
-//   parent: profile,
-//   currentPath: "profile.school"
-// })
-// Wat.mount(document.getElementById("school"), school)
+console.log(user)
 
 window.u = function(name) {
   user.update({
@@ -73,36 +59,25 @@ window.u = function(name) {
       }
     }
   })
-  user.updateArray("profil.girls").slice(0, 1)
 }
 
+window.u2 = function(name) {
+  user.update({
+    profile: {
+      girls: [
+        {name: "Tomy", age: 49},
+        {name: "Jerry", age: 48},
+        {name: "Jack", age: 55}
+      ]
+    }
+  })
+  //user.updateArray("profile.girls").slice(0, 1)
 }
-// ================== TodoList ===============
-// var todoListTpl = $(document.getElementById("todo-list-tpl")).html()
-// var todoItemTpl = $(document.getElementById("todo-item-tpl")).html()
-//
-// //console.log(parser.parse("{jerry.profile.girls[0].name+tomy.name} @==== I love {tomy.name}"))
-// var state = {
-//   name: "Todo App",
-//   todos: [
-//     {_id: 1, content: "This is short item"},
-//     {_id: 2, content: "u bad bad!"}
-//   ]
-// }
-//
-// var TodoList = Wat.component("TodoList", {
-//   template: todoListTpl,
-//   defautState: {},
-//   init: function(options) {
-//     // will set state automatically
-//   }
-//   // methods here
-// })
-//
-// var TodoItem = Wat.component("TodoItem", {
-//   template: todoItemTpl,
-//   defautState: {}
-//   // methods here
-// })
-//
-// }
+
+window.u3 = function() {
+  user.updateArray("profile.girls").pop()
+  //user.updateArray("profile.girls").slice(0, 1)
+}
+window.m = model
+
+}

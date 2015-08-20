@@ -20,6 +20,9 @@ var componentMethods = {
   },
   update: function(newState) {
     this.scope.update(newState)
+  },
+  updateArray: function() {
+    return this.scope.updateArray.apply(this.scope, arguments)
   }
 }
 

@@ -52,7 +52,6 @@
         school.name: {school.name}
         school: {JSON.stringify(school)}
       </div>
-      gril.0.name: <input type="text" name="name" w-model="girls[0].name">
       <hr>
       <div w-component="School:school">
       <hr>
@@ -81,9 +80,11 @@
       ================ User ====================
       <div>{_id}</div>
       <div>{profile.name} @ {profile.desc + " " + education.school}</div>
-      <div>{JSON.stringify(profile)}</div>
+      <div>{JSON.stringify(profile) + 'shit'}</div>
+      <div>{profile.girls.length}</div>
       <div>
-        {profile.girls[0].name + " #### " + profile.avatars[0]}
+        {" #### " + profile.avatars[0]}
+        profile.girls[0].name +
       </div>
       <hr>
       <div w-component="Profile:profile"></div>
@@ -91,7 +92,10 @@
       <div w-repeat="profile.girls">
         <div>#{$index}: {name}</div>
       </div>
-      <input type="text" w-model="profile.girls[0].name">
+      <hr>
+      <div w-repeat="profile.girls">
+        <div>#{$index}: {name + " diff!"}</div>
+      </div>
     </div>
   </script>
 

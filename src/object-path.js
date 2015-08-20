@@ -1,4 +1,5 @@
 var _ = require("./util")
+var config = require("./config")
 
 exports.getFirstProp = function(path) {
   var FIRST_PROP_REG = /(^[\w_\$][\w\$_]+)([\.\[\]])?/
@@ -72,4 +73,8 @@ exports.makeObjectByPath = function(path, value) {
     }
   })
   return rootObj
+}
+
+exports.makeArrayEvent = function (method, path) {
+  return config.arrayEventPrefix + ":" + method + ":" + path
 }
