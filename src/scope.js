@@ -139,22 +139,26 @@ pro.removeSubScope = function(scope) {
   var scopes = this.subScopes
   for(var i = 0, len = scopes.length; i < len; i++) {
     if (scopes[i] === scope) {
-      unwatch(scope)
+      scope.unwatch()
       return scopes.splice(i, 1)
     }
   }
 }
 
-function unwatch(scope) {
+pro.unwatch = function() {
   // TODO: Test this functionality
-  var watchPaths = scope.watchPaths
-  var root = scope.$root
+  var watchPaths = this.watchPaths
+  var root = this.$root
+  var self = this
   for (var path in watchPaths) {
     _.each(watchPaths[path], function(fn) {
-      var fullPath = objectPath.join([scope.currentPath, path])
+      var fullPath = objectPath.join([self.currentPath, path])
       root.emitter.off(fullPath, fn)
     })
   }
+  _.each(this.subScopes, function(scope) {
+    scope.unwatch()
+  })
 }
 
 pro.get = function(token) {
