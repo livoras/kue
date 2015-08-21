@@ -108,7 +108,7 @@
   </script>
 
   <script id="girl-tpl" type="text/template">
-    <div>
+    <div w-on="click: cliclOnName, mousedown: clickOnName($index, name)">
       ${$index}: {name}
     </div>
   </script>

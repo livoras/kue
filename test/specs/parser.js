@@ -72,16 +72,24 @@ describe("Test parser", function() {
           }])
   })
 
-  it("Parse string directive.", function() {
-    parser.parseDirective("users").should.be.equal("users")
-    parser.parseDirective("user in users").should.be.equal("user in users")
-  })
-
   it("Parse key-value directive.", function() {
     parser.parseDirective("color: red, 'font-size': '12px'")
           .should.be.deep.equal({
             "color": "red",
             "font-size": "'12px'"
+          })
+  })
+
+  it("Parse string directive.", function() {
+    parser.parseDirective("users").should.be.equal("users")
+    parser.parseDirective("user in users").should.be.equal("user in users")
+  })
+
+  it("Parse key-value directive of function call and paramaters", function() {
+    parser.parseDirective("click: clickOnName, mousedown: clickOnName($index, name)")
+          .should.be.deep.equal({
+            "click": "clickOnName",
+            "mousedown": "clickOnName($index, name)"
           })
   })
 

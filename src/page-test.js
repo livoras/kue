@@ -42,7 +42,7 @@ var School = Wat.component("School", {template: schoolTpl})
 var Girl = Wat.component("Girl", {
   template: girlTpl,
   clickOnName: function(event) {
-    console.log(name)
+    console.log(this.state.name)
   }
 })
 

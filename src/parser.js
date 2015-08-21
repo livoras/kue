@@ -106,13 +106,57 @@ exports.parseDirective = function(value) {
     //return value
     return objectPath.makePathFromRawPath(value)
   } else {
+    // 词法分析！
     var ret = {}
-    _.each(value.split(","), function(map) {
-      var kv = map.split(":")
-      var key = cleanQuotes(_.trim(kv[0]))
-      var value = _.trim(kv[1])
-      ret[key] = value
+    var key
+    var status = 0
+    var str = ""
+    function makePair() {
+      ret[_.trim(cleanQuotes(key))] = _.trim(str)
+      key = ""
+      str = ""
+    }
+    _.each(value, function(c) {
+      switch(status) {
+        case 0:
+          str += c
+          status = 1
+          break
+        case 1:
+          if (c === ":") {
+            key = str
+            str = ""
+            status = 2
+          } else {
+            str += c
+          }
+          break
+        case 2:
+          if (c === ",") {
+            makePair()
+            status = 1
+          } else if (c === "(") {
+            str += c
+            status = 3
+          } else {
+            str += c
+          }
+          break
+        case 3:
+          str += c
+          if (c === ")") {
+            status = 4
+          }
+          break
+        case 4:
+          if (c === ",") {
+            makePair()
+            status = 1
+          }
+          break
+      }
     })
+    makePair()
     return ret
   }
 }

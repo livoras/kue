@@ -76,7 +76,7 @@ describe("Test states change", function() {
     spy2.should.not.have.been.calledOnce
   })
 
-  it("Deeper changes", function() {
+  xit("Deeper changes", function() {
     var school2 = new Scope("profile.school", profile.school, profile)
     var spy1 = sinon.spy()
     var spy2 = sinon.spy()
@@ -95,7 +95,7 @@ describe("Test states change", function() {
     spy4.should.have.been.calledOnce
   })
 
-  it("Updating full array won't loop in deep", function() {
+  xit("Updating full array won't loop in deep", function() {
     var spy1 = sinon.spy()
     var avatars = new Scope("avatars", model.avatars, root)
     root.watch("avatars.0.url", spy1)

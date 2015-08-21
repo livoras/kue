@@ -21,6 +21,7 @@ var $ = function(dom) {
       }
     },
     on: function(event, fn)  {
+      console.log(event)
       var el  = this.el
       if (el.addEventListener) {
         el.addEventListener(event, fn, false);
