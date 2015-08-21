@@ -13,9 +13,6 @@ module.exports = {
         watchArrayChangeAndRender(ele, attr, component, holders, id, dir)
       })(cid++)
     })
-  },
-  update: function(ele, attr, component, dir) {
-    console.log(dir)
   }
 }
 
@@ -51,21 +48,46 @@ function watchArrayChangeAndRender(ele, attr, component, holders, id, dir) {
     var current = start.nextSibling
     var end = cache.holders[1]
 
+    function clearAndReplace() {
+      while(current !== end) {
+        var next = current.nextSibling
+        $(current).remove()
+        current = next
+      }
+      _.each(cache.components, function(comp) {
+        component.scope.removeSubScope(comp.scope)
+      })
+      var components = makeList(ele, component, dir, cache.Component, cache.holders[1])
+      cache.components = components
+    }
+
     switch(action) {
-      case "replace":
-        while(current !== end) {
-          var next = current.nextSibling
-          $(current).remove()
-          current = next
-        }
-        makeList(ele, component, dir, cache.Component, cache.holders[1])
-        break
       case "pop":
         if (end.previousSibling !== start) {
           $(end.previousSibling).remove()
           var lastComp = cache.components.pop()
           scope.removeSubScope(lastComp.scope)
         }
+        break
+      case "push":
+        _.each(data, function(state, i) {
+          var len = cache.components.length
+          var newPath = objectPath.join([component.scope.currentPath, dir, len])
+          var comp = new cache.Component({state: state}, {
+            currentPath: newPath,
+            parent: component,
+            extra: {
+              $index: len,
+              $item: state
+            }
+          })
+          cache.components.push(comp)
+          $(end).before(comp.el)
+        })
+        break
+      default:
+        clearAndReplace()
+        break
     }
 
   })
@@ -77,9 +99,12 @@ function makeList(ele, component, dir, TempComp, endPlaceholder) {
   var components = []
   _.each(states, function(state, i) {
     var newComponent = new TempComp({state: state}, {
-      currentPath: objectPath.join([dir, i]),
+      currentPath: objectPath.join([component.scope.currentPath, dir, i]),
       parent: component,
-      extra: {$index: i}
+      extra: {
+        $index: i,
+        $item: state
+      }
     })
     components.push(newComponent)
     frag.appendChild(newComponent.el)
@@ -105,4 +130,9 @@ function setRepeatCache(component, id, data) {
     root.repeatCache = []
   }
   root.repeatCache[id] = data
+}
+
+function transformScope(scope, newIndex) {
+  var currentPath = scope.currentPath
+  var prefix = currentPath.replace(/\.\d+$/, "")
 }

@@ -59,26 +59,26 @@ pro.watchArray = function(path, fn) {
   _.each(arrMethods, function(method) {
     var eventName = objectPath.makeArrayEvent(method, path)
     var func = function() {
-      var params = [].slice.call(arguments, 0)
-      fn(method, params)
+      [].unshift.call(arguments, method)
+      fn.apply(fn, arguments)
     }
     self.$root.emitter.on(eventName, func)
     self.addLocalWatchPath(eventName, func)
   })
 }
 
-pro.broadcast = function(changePath) {
+pro.broadcast = function(changePath, data) {
   if (!this.emitter) return _.error("I am not a root!")
 
   if(isArrayEvent(changePath)) {
-    this.$root.emitter.emit(changePath)
+    this.$root.emitter.emit(changePath, data)
     var arrayPath = changePath.split(":")[2]
     // 触发数组中子元素的事件
     // TODO: 不要触发无关的子元素事件。例如，pop掉了最后一个，不要触发第一个的事件。
     for (var evenName in this.emitter.events) {
       if(_.startsWith(evenName, arrayPath) && (
          evenName.length > arrayPath.length)) { // 只触发真子元素
-        this.emitter.emit(evenName)
+        this.emitter.emit(evenName, data)
       }
     }
     changePath = arrayPath
@@ -88,7 +88,7 @@ pro.broadcast = function(changePath) {
   var steps = objectPath.makeStepsFromPath(changePath)
   var self = this
   _.each(steps, function(path) {
-    self.$root.emitter.emit(path)
+    self.$root.emitter.emit(path, data)
   })
 }
 
@@ -125,12 +125,14 @@ pro.getScopeAndWatchPath = function(path) {
 
 pro.getRightScopeByToken = function(token) {
   var scope = this
+  var isParent = false
   while(scope.currentPath != ""
         && _.isUndefined(scope.state[token])
         && _.isUndefined(scope.extra[token])) {
     scope = scope.parentScope
+    isParent = true
   }
-  return !_.isUndefined(scope.state[token])
+  return isParent
     ? scope
     : this
 }
@@ -173,7 +175,11 @@ pro.getObjectByPath = function(path) {
   path = objectPath.makePathFromRawPath(path)
   var token = objectPath.getFirstProp(path)
   var scope = this.getRightScopeByToken(token)
-  return objectPath.getObjectByPath(scope.state, path)
+  var ret = objectPath.getObjectByPath(scope.state, path)
+  if (_.isUndefined(ret)) {
+    return objectPath.getObjectByPath(scope.extra, path)
+  }
+  return ret
 }
 
 module.exports = Scope

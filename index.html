@@ -53,8 +53,11 @@
         school: {JSON.stringify(school)}
       </div>
       <hr>
-      <div w-component="School:school">
+      <div w-component="School:school"></div>
       <hr>
+      <div w-repeat="girls">
+        <div w-component="Girl:$item"></div>
+      </div>
    </div>
   </script>
 
@@ -84,18 +87,29 @@
       <div>{profile.girls.length}</div>
       <div>
         {" #### " + profile.avatars[0]}
-        profile.girls[0].name +
+        {profile.girls[0].name}
       </div>
       <hr>
       <div w-component="Profile:profile"></div>
       <hr>
-      <div w-repeat="profile.girls">
-        <div>#{$index}: {name}</div>
-      </div>
+      <div w-repeat="profile.girls"> <div>#{$index}: {name}</div> </div>
       <hr>
-      <div w-repeat="profile.girls">
-        <div>#{$index}: {name + " diff!"}</div>
-      </div>
+      <div w-repeat="profile.girls"> <div>#{$index}: {name + " diff!"}</div> </div>
+      <input type="text" name="name" w-model="profile.girls[0].name">
+      <input type="text" name="name" w-model="profile.girls[1].name">
+      <div>
+      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+      <br>
+      <span w-repeat="costs">
+        {$item}
+      </span>
+      <div>
+    </div>
+  </script>
+
+  <script id="girl-tpl" type="text/template">
+    <div>
+      ${$index}: {name}
     </div>
   </script>
 

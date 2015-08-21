@@ -54,12 +54,26 @@ var $ = function(dom) {
         this.el.innerHTML = content
       }
     },
-    remove: function() {
-      this.el.parentNode.removeChild(this.el)
+    remove: function(wait) {
+      if (!this.el.parentNode && wait) {
+        var self = this
+        _.nextTick(function() {
+          self.remove(wait)
+        })
+      } else {
+        this.el.parentNode.removeChild(this.el)
+      }
       return this
     },
-    before: function(node) {
-      this.el.parentNode.insertBefore(node, this.el)
+    before: function(node, wait) {
+      if (!this.el.parentNode && wait) {
+        var self = this
+        _.nextTick(function() {
+          self.before(node, wait)
+        })
+      } else {
+        this.el.parentNode.insertBefore(node, this.el)
+      }
       return this
     }
   }

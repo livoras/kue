@@ -1,4 +1,5 @@
 var objectPath = require("./object-path")
+var _ = require("./util")
 
 function ArrayFactory(arr, path, scope) {
   this.arr = arr
@@ -8,34 +9,21 @@ function ArrayFactory(arr, path, scope) {
 
 var pro = ArrayFactory.prototype
 
-pro.sort = function() {
-
-}
-
-pro.push = function() {
-  // body...
-}
-
-pro.pop = function() {
-  var result = this.arr.pop()
-  this.scope.broadcast(objectPath.makeArrayEvent("pop", this.path))
-  return result
-}
-
-pro.shift = function() {
-  // body...
-}
-
-pro.unshift = function() {
-  // body...
-}
-
-pro.reverse = function() {
-  // body...
-}
-
-pro.splice = function() {
-  // body...
-}
+_.each([
+  "replace",
+  "pop",
+  "push",
+  "shift",
+  "unshift",
+  "splice",
+  "sort",
+  "reverse"
+], function(method) {
+  pro[method] = function() {
+    var result = this.arr[method].apply(this.arr, arguments)
+    this.scope.broadcast(objectPath.makeArrayEvent(method, this.path), arguments)
+    return result
+  }
+})
 
 module.exports = ArrayFactory

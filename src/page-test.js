@@ -7,9 +7,11 @@ module.exports = function(Wat) {
 var userTpl = $(document.getElementById("user-tpl")).html()
 var profileTpl = $(document.getElementById("profile-tpl")).html()
 var schoolTpl = $(document.getElementById("school-tpl")).html()
+var girlTpl = $(document.getElementById("girl-tpl")).html()
 
 var model = {
   _id: 0,
+  costs: [1, 2, 3, 4, 5, 6],
   education: {
     school: "No!",
     date: "2015-07-09"
@@ -37,6 +39,12 @@ var model = {
 var Profile = Wat.component("Profile", {template: profileTpl})
 var User = Wat.component("User", {template: userTpl})
 var School = Wat.component("School", {template: schoolTpl})
+var Girl = Wat.component("Girl", {
+  template: girlTpl,
+  clickOnName: function(event) {
+    console.log(name)
+  }
+})
 
 var user = new User({state: model})
 Wat.render(document.getElementById("content"), user)
@@ -75,7 +83,57 @@ window.u2 = function(name) {
 }
 
 window.u3 = function() {
+  console.log("pop")
   user.updateArray("profile.girls").pop()
+  //user.updateArray("profile.girls").slice(0, 1)
+}
+
+window.splice = function() {
+  console.log("pop")
+  user.updateArray("profile.girls").splice(1, 1)
+  //user.updateArray("profile.girls").slice(0, 1)
+}
+
+window.reverse = function() {
+  console.log("pop")
+  user.updateArray("profile.girls").reverse()
+  user.updateArray("costs").reverse()
+  //user.updateArray("profile.girls").slice(0, 1)
+}
+
+window.u4 = function() {
+  console.log("shift")
+  user.updateArray("profile.girls").shift()
+  //user.updateArray("profile.girls").slice(0, 1)
+}
+
+window.sort = function() {
+  user.updateArray("costs").sort(function(a, b) {
+    return b - a
+  })
+}
+
+window.u5 = function() {
+  console.log("push")
+  user.updateArray("profile.girls").push({
+    name: "Mike",
+    age: 45
+  }, {
+    name: "John",
+    age: 34
+  })
+  //user.updateArray("profile.girls").slice(0, 1)
+}
+
+window.u6 = function() {
+  console.log("unshift")
+  user.updateArray("profile.girls").unshift({
+    name: "Mike",
+    age: 45
+  }, {
+    name: "John",
+    age: 34
+  })
   //user.updateArray("profile.girls").slice(0, 1)
 }
 window.m = model
