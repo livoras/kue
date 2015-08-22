@@ -7,6 +7,7 @@ var cid = 0
 
 module.exports = {
   bind: function(ele, attr, component, dir) {
+    $(ele).hide()
     _.nextTick(function() {
       (function(id) {
         var holders = generateListAndReturnPlaceholder(ele, attr, component, dir, id)
@@ -24,6 +25,7 @@ function generateListAndReturnPlaceholder(ele, attr, component, dir, id) {
   $ele.before(endPlaceholder)
 
   $ele.remove()
+  $ele.removeAttr("style")
   $ele.removeAttr(attr.name)
 
   var tpl = getTplFromElement(ele)

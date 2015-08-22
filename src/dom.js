@@ -3,6 +3,9 @@ var _ = require("./util")
 var $ = function(dom) {
   return {
     el: dom,
+    hide: function() {
+      this.el.style.display = "none"
+    },
     attr: function(attr, name) {
       if (arguments.length === 1) {
         return this.el.getAttribute(attr)
