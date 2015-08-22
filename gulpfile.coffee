@@ -14,8 +14,8 @@ logError = (e)->
 gulp.task 'clean', (cb)->
   del.sync('bin')
 
-gulp.task 'kue', ->
-  gulp.src('src/kue.js')
+gulp.task 'wet', ->
+  gulp.src('src/wet.js')
       .pipe browserify
         debug: true
         transform: stringify
@@ -40,14 +40,14 @@ gulp.task 'test', ['test-compile'], ->
 
 gulp.task 'watch', ->
   livereload.listen()
-  gulp.watch 'index.html', ['kue', 'test']
-  gulp.watch 'src/**/*', ['kue', 'test']
+  gulp.watch 'index.html', ['wet', 'test']
+  gulp.watch 'src/**/*', ['wet', 'test']
   gulp.watch 'test/**/*', ['test']
 
 # gulp build
 gulp.task 'build', ->
   del.sync('dist')
-  gulp.src("src/kue.js", {})
+  gulp.src("src/wet.js", {})
       .pipe browserify
         debug: true
         transform: stringify
@@ -60,7 +60,7 @@ gulp.task 'connect', ->
 
 gulp.task 'default', [
   'clean'
-  'kue'
+  'wet'
   'connect'
   'test'
   'watch'

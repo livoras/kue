@@ -1,4 +1,5 @@
 var $ = require("../dom")
+var _ = require("../util")
 
 module.exports = {
   bind: function(ele, attr, component, dir) {
@@ -17,17 +18,25 @@ module.exports = {
       } else {
         var callName = dir[eventName]
       }
-      ;(function(params, eventName) {
-      console.log(callName, component)
+      ;(function(params, eventName, callName) {
       $ele.on(eventName, function(event) {
-        console.log(eventName, params.length)
-        if (params.length === 0) {
-          // TODO
-        } else {
-          // TODO
-        }
+        var args = getParams(params, component, event)
+        component[callName].apply(component, args)
       })
-      })(params, eventName)
+    })(params, eventName, callName)
     }
   }
+}
+
+function getParams(params, component, event) {
+  if (params.length === 0) return [event]
+  var ret = []
+  _.each(params, function(param) {
+    if (param === "$event") {
+      ret.push(event)
+    } else {
+      ret.push(component.scope.getObjectByPath(_.trim(param)))
+    }
+  })
+  return ret
 }

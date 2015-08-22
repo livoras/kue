@@ -50,5 +50,10 @@ common.component = module.exports = function(componentName, componentOpts) {
   if (_.isString(componentName) && componentName.length > 0) {
     components[componentName] = Component
   }
+  _.of(componentOpts, function(key, value) {
+    if(_.isFunction(value)) {
+      pro[key] = value
+    }
+  })
   return Component
 }

@@ -34,7 +34,7 @@ exports.bindDir = function(attr, node, component) {
   var dirName = getDirName(attr)
   if(!dirName) return
   if(!directives[dirName]) {
-    throw new Error("Directive `" + dirName + "` is not found.")
+    throw new Error("directive `" + dirName + "` is not found.")
   }
   var directive = parser.parseDirective(attr.value)
   var paths = getTokensAndPathsFromDirective(directive).paths
@@ -70,7 +70,7 @@ function getDirName(attr) {
 }
 
 function inNotUpdateList(name) {
-  var list = ["component", "repeat"]
+  var list = ["component", "repeat", "on"]
   for (var i = 0, len = list.length; i < len; i++) {
     if (list[i] === name) {
       return true

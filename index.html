@@ -48,7 +48,7 @@
   <script id="profile-tpl" type="text/template">
     <div>
       ================ Profile : {_id} - {education.school} ====================
-      <div>
+      <div w-on="click: tellMom">
         school.name: {school.name}
         school: {JSON.stringify(school)}
       </div>
@@ -108,11 +108,11 @@
   </script>
 
   <script id="girl-tpl" type="text/template">
-    <div w-on="click: cliclOnName, mousedown: clickOnName($index, name)">
+    <div w-on="mousedown: tellMom($index, name), click: clickOnName(profile)">
       ${$index}: {name}
     </div>
   </script>
 
-  <script src="bin/kue.js"> </script>
+  <script src="bin/wet.js"> </script>
 </body>
 </html>

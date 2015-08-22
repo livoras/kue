@@ -17,6 +17,13 @@ module.exports = {
     var path = (stateName === "$item")
       ? ""
       : stateName
+    // Here to get method from parent component
+    // TODO: to test
+    function F() {}
+    F.prototype = component.constructor.prototype
+    var pro = new F()
+    _.extend(pro, Component.prototype)
+    Component.prototype = pro
     var subComponent = new Component({state: state}, {
       parent: component,
       currentPath: objectPath.join([component.scope.currentPath, path])

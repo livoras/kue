@@ -116,7 +116,8 @@ exports.parseDirective = function(value) {
       key = ""
       str = ""
     }
-    _.each(value, function(c) {
+    var dirtyStr = value.split("") // FUCK IE7
+    _.each(dirtyStr, function(c) {
       switch(status) {
         case 0:
           str += c

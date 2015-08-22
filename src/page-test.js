@@ -1,7 +1,7 @@
 var $ = require("./dom")
 window.JSON = require("json3")
 
-module.exports = function(Wat) {
+module.exports = function(Wet) {
 
 // =========================== Test Code ===========================
 var userTpl = $(document.getElementById("user-tpl")).html()
@@ -36,18 +36,23 @@ var model = {
 }
 
 /* Component */
-var Profile = Wat.component("Profile", {template: profileTpl})
-var User = Wat.component("User", {template: userTpl})
-var School = Wat.component("School", {template: schoolTpl})
-var Girl = Wat.component("Girl", {
+var Profile = Wet.component("Profile", {template: profileTpl})
+var User = Wet.component("User", {
+  template: userTpl,
+  tellMom: function() {
+    console.log("good", arguments)
+  }
+})
+var School = Wet.component("School", {template: schoolTpl})
+var Girl = Wet.component("Girl", {
   template: girlTpl,
-  clickOnName: function(event) {
-    console.log(this.state.name)
+  clickOnName: function(profile) {
+    console.log(this.state.name, profile)
   }
 })
 
 var user = new User({state: model})
-Wat.render(document.getElementById("content"), user)
+Wet.render(document.getElementById("content"), user)
 console.log(user)
 
 window.u = function(name) {
