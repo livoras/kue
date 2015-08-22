@@ -1,10 +1,10 @@
-function Wat(options) {}
+function Wet(options) {}
 
-Wat.component = require("./component")
+Wet.component = require("./component")
 
-Wat.render = function(el, component) {
+Wet.render = function(el, component) {
   el.innerHTML = ""
   el.appendChild(component.el)
 }
 
-require("./page-test")(Wat)
+window.Wet = Wet

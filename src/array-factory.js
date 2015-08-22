@@ -21,7 +21,7 @@ _.each([
 ], function(method) {
   pro[method] = function() {
     var result = this.arr[method].apply(this.arr, arguments)
-    this.scope.broadcast(objectPath.makeArrayEvent(method, this.path), arguments)
+    this.scope.$root.broadcast(objectPath.makeArrayEvent(method, this.path), arguments)
     return result
   }
 })

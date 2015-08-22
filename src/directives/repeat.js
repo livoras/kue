@@ -30,6 +30,7 @@ function generateListAndReturnPlaceholder(ele, attr, component, dir, id) {
   var TempComp = common.component({template: tpl})
   function F() {}
   F.prototype = component.constructor.prototype
+  console.log(component, component.constructor.prototype)
   TempComp.prototype = new F
   var components = makeList(ele, component, dir, TempComp, endPlaceholder)
 

@@ -40,7 +40,7 @@ gulp.task 'test', ['test-compile'], ->
 
 gulp.task 'watch', ->
   livereload.listen()
-  gulp.watch 'index.html', ['wet', 'test']
+  gulp.watch '*/**/*.html', ['wet', 'test']
   gulp.watch 'src/**/*', ['wet', 'test']
   gulp.watch 'test/**/*', ['test']
 
