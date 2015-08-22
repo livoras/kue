@@ -52,7 +52,7 @@
       })
     },
     go: function() {
-      console.log('fuck');
+      console.log(this.scope.getObjectByPath("todos"));
     },
     handleKeyDown: function(event) {
       if (event.keyCode === 13) {
