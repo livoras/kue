@@ -1,6 +1,5 @@
 //require("./specs/sample.js")
 require("./specs/util.js")
-require("./specs/obserable.js")
 require("./specs/parser.js")
 require("./specs/binder.js")
 require("./specs/dom.js")

@@ -1,11 +1,4 @@
-var obserable = require("./obserable")
 var _ = exports
-
-_.isObserable = function(obj) {
-  var obj = obj.$$
-  return (obj instanceof obserable.ObserableKey) ||
-         (obj instanceof obserable.ObserableArray)
-}
 
 _.map = function(arr, fn) {
   var results = []

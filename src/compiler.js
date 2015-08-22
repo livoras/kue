@@ -1,5 +1,4 @@
 var _ = require("./util")
-var obserable = require("./obserable")
 var binder = require("./binder")
 var $ = require("./dom")
 var config = require("./config")
