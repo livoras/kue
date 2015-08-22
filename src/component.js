@@ -17,8 +17,8 @@ var componentMethods = {
     this.scope = new Scope(config.currentPath, this.state, parentScope)
     this.scope.extra = config.extra || {}
     this.scope.extra.$this = this
-    compiler.compile(this.el, this)
     _.extend(this, options)
+    compiler.compile(this.el, this)
   },
   update: function(newState) {
     this.scope.update(newState)
