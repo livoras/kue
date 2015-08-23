@@ -21,7 +21,10 @@ var componentMethods = {
     this.scope.extra.$this = this
     delete options.el // FUCK IE7
     _.extend(this, options)
+    var $el = $(this.el)
+    $el.addClass("wet-compiling")
     compiler.compile(this.el, this)
+    $el.removeClass("wet-compiling")
   },
   update: function(newState) {
     this.scope.update(newState)
