@@ -93,6 +93,11 @@ _.startsWith = function(str, searchStr, pos) {
   return str.indexOf(searchStr, pos) === pos;
 }
 
+_.slice = function(arr) {
+  var params = Array.prototype.slice.call(arguments, 1)
+  return Array.prototype.slice.apply(arr, params)
+}
+
 /**
  * Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError.
  * steal from underscore: http://underscorejs.org/docs/underscore.html

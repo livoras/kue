@@ -6,6 +6,8 @@ mochaPhantomJS = require 'gulp-mocha-phantomjs'
 uglify = require 'gulp-uglify'
 stringify = require 'stringify'
 connect = require 'gulp-connect'
+rename = require 'gulp-rename'
+pkg = require './package'
 
 logError = (e)->
   console.log e
@@ -53,7 +55,8 @@ gulp.task 'build', ->
         transform: stringify
           extensions: ['.html'], minify: true
       .pipe uglify()
-      .pipe gulp.dest 'dist/'
+      .pipe rename("wet-#{pkg.version}.min.js")
+      .pipe gulp.dest 'dist'
 
 gulp.task 'connect', ->
   connect.server()

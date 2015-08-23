@@ -32,7 +32,7 @@ function watchAllTokens(expressions, component, fn) {
 
 exports.bindDir = function(attr, node, component) {
   var dirName = getDirName(attr)
-  if(!dirName) return
+  if(!dirName || dirName === "ignore") return
   if(!directives[dirName]) {
     throw new Error("directive `" + dirName + "` is not found.")
   }

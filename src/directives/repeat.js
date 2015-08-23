@@ -1,41 +1,40 @@
 var _ = require("../util")
 var $ = require("../dom")
 var common = require("../common")
+var config = require("../config")
 var components = common.components
 var objectPath = require("../object-path")
 var cid = 0
+var prefix = config.directivePrefix
 
 module.exports = {
   bind: function(ele, attr, component, dir) {
-    $(ele).hide()
-    _.nextTick(function() {
-      (function(id) {
-        var holders = generateListAndReturnPlaceholder(ele, attr, component, dir, id)
-        watchArrayChangeAndRender(ele, attr, component, holders, id, dir)
-      })(cid++)
-    })
+    var id = cid++
+    var $ele = $(ele)
+    var placeholder = document.createComment("repeat " + dir + " " + id)
+    var endPlaceholder = document.createComment("repeat " + dir + " end " + id)
+    var holders = [placeholder, endPlaceholder]
+    $ele.before(placeholder)
+    $ele.before(endPlaceholder)
+
+    $ele.remove()
+    $ele.removeAttr(attr.name)
+
+    generateListSetCache(ele, attr, component, dir, id, holders)
+    watchArrayChangeAndRender(ele, attr, component, holders, id, dir)
+
+    $ele.attr(prefix + "-ignore", "true")
   }
 }
 
-function generateListAndReturnPlaceholder(ele, attr, component, dir, id) {
-  var $ele = $(ele)
-  var placeholder = document.createComment("repeat " + dir + " " + id)
-  var endPlaceholder = document.createComment("repeat " + dir + " end " + id)
-  $ele.before(placeholder)
-  $ele.before(endPlaceholder)
-
-  $ele.remove()
-  $ele.removeAttr("style")
-  $ele.removeAttr(attr.name)
-
+function generateListSetCache(ele, attr, component, dir, id, holders) {
   var tpl = getTplFromElement(ele)
   var TempComp = common.component({template: tpl})
   function F() {}
   F.prototype = component.constructor.prototype
   TempComp.prototype = new F
-  var components = makeList(ele, component, dir, TempComp, endPlaceholder)
+  var components = makeList(ele, component, dir, TempComp, holders[1])
 
-  var holders = [placeholder, endPlaceholder]
   setRepeatCache(component, id, {
     Component: TempComp,
     holders: holders,
