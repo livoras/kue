@@ -5,9 +5,15 @@ var config = require("./config")
 var prefix = config.directivePrefix
 
 function compileNode(node, component) {
+  if (!node) _.error("Parse error. There maybe somethin wrong with the template.")
   if (node.nodeType === 1) {
     compileAttr(node, component)
-    if ($(node).attr(prefix + "-ignore")) return
+    var $node = $(node)
+    var ignoreAttr = prefix + "-ignore"
+    if ($node.attr(ignoreAttr)) {
+      $node.removeAttr(ignoreAttr)
+      return
+    }
     var nodes = toArray(node.childNodes)
     _.each(nodes, function(node) {
       compileNode(node, component)

@@ -1,6 +1,9 @@
 var _ = require("../util")
 var objectPath = require("../object-path")
 var components = require("../common").components
+var config = require("../config")
+var $ = require("../dom")
+var prefix = config.directivePrefix
 
 module.exports = {
   bind: function(ele, attr, component, dir) {
@@ -32,9 +35,8 @@ module.exports = {
     })
 
     // Don't make component content interupt compilation.
-    _.nextTick(function() {
-      ele.innerHTML = ""
-      ele.appendChild(subComponent.el)
-    })
+    $(ele).attr(prefix + "-ignore", "true")
+    ele.innerHTML = ""
+    ele.appendChild(subComponent.el)
   }
 }

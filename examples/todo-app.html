@@ -16,7 +16,10 @@
     </style>
 
     <script type="text/template" id="app-tpl">
-      <div w-component="TodoApp:todoAppData">
+      <div>
+        <div w-component="TodoApp:todoAppData"></div>
+        <div w-component="TodoApp:todoAppData2"></div>
+      </div>
     </script>
 
     <script type="text/template" id="todo-app-tpl">
@@ -25,13 +28,13 @@
         <input type="text"
           w-model="newTodo"
           w-on="keydown: handleKeyDown">
-        <button w-on="click: addTodo(newTodo)">#Add</button>
+        <button w-on="click: addTodo(newTodo, app)">#Add</button>
         <ul>
           <li w-repeat="todos" w-on="click: go">
             <div w-class="done: done">
               #{$index}: {content}
               <input type="checkbox" w-model="done">
-              <button type="button" w-on="click: deleteTodo($index)">x</button>
+              <button type="button" w-on="click: deleteTodo($index, app)">x</button>
             </div>
           </li>
         </ul>
@@ -45,9 +48,9 @@
   var appTpl = document.getElementById("app-tpl").innerHTML
   var TodoApp = Wet.component({
     template: tpl,
-    addTodo: function(content) {
+    addTodo: function(content, app) {
       if (!content) return
-      this.updateArray("todoAppData.todos").push({
+      this.updateArray("todoAppData" + app + ".todos").push({
         content: content,
         done: false
       })
@@ -60,11 +63,11 @@
     },
     handleKeyDown: function(event) {
       if (event.keyCode === 13) {
-        this.addTodo(this.state.newTodo)
+        this.addTodo(this.state.newTodo, this.state.app)
       }
     },
-    deleteTodo: function(index) {
-      this.updateArray("todoAppData.todos").splice(index, 1)
+    deleteTodo: function(index, app) {
+      this.updateArray("todoAppData" + app + ".todos").splice(index, 1)
     }
   })
 
@@ -75,7 +78,19 @@
   Wet.render(document.getElementById("todo-app"), new App({
     state: {
       todoAppData: {
+        app: "",
         name: "Todo App 1",
+        newTodo: "",
+        todos: [
+          {content: "Take a showser", done: false},
+          {content: "Wash clothes", done: false},
+          {content: "Play with the cats", done: false},
+          {content: "Go to bedroom", done: false}
+        ]
+      },
+      todoAppData2: {
+        app: "2",
+        name: "Todo App 2",
         newTodo: "",
         todos: [
           {content: "Take a showser", done: false},
