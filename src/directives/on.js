@@ -21,7 +21,7 @@ module.exports = {
       ;(function(params, eventName, callName) {
       $ele.on(eventName, function(event) {
         var args = getParams(params, component, event)
-        component[callName].apply(component, args)
+        component.callMethod(callName, args)
       })
     })(params, eventName, callName)
     }

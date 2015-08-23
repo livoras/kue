@@ -68,6 +68,9 @@
     },
     deleteTodo: function(index, app) {
       this.updateArray("todoAppData" + app + ".todos").splice(index, 1)
+      this.emit("delete todo!", app, index)
+      this.parent.emit("delete todo!", app, index)
+      console.log(this)
     }
   })
 
@@ -102,6 +105,12 @@
     }
   })
   Wet.render(document.getElementById("todo-app"), app)
+
+  console.log(app)
+
+  app.on("delete todo!", function() {
+    console.log("Todo item was deleted!", arguments);
+  })
 
   </script>
 </html>

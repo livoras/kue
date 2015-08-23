@@ -29,12 +29,16 @@ module.exports = {
 
 function generateListSetCache(ele, attr, component, dir, id, holders) {
   var tpl = getTplFromElement(ele)
-  var TempComp = common.component({template: tpl})
-  function F() {}
-  F.prototype = component.constructor.prototype
-  TempComp.prototype = new F
-  var components = makeList(ele, component, dir, TempComp, holders[1])
+  var TempComp = common.component({
+    template: tpl,
+    notEmitter: true // Nobody will emit event on components without references.
+  })
 
+  // function F() {}
+  // F.prototype = component.constructor.prototype
+  // TempComp.prototype = new F
+
+  var components = makeList(ele, component, dir, TempComp, holders[1])
   setRepeatCache(component, id, {
     Component: TempComp,
     holders: holders,
