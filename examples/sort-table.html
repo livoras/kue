@@ -17,8 +17,9 @@
     <script type="text/template" id="sort-table-tpl">
       <div>
         <ul>
-          <li w-repeat="costs">{cost}$</li>
+          <li w-repeat="costs">{$item}$</li>
         </ul>
+        <button type="button" w-on="click: sort">sort</button>
       </div>
     </script>
   </body>
@@ -26,9 +27,27 @@
   <script type="text/javascript">
   var tpl = document.getElementById("sort-table-tpl").innerHTML
   var SortTable = Wet.component("SortTable", {
-    template: tpl
+    template: tpl,
+    sort: function() {
+      var self = this
+      this.updateArray("costs").sort(function(a, b) {
+        if (self.state.dir === -1) {
+          return b - a
+        } else {
+          return a - b
+        }
+      })
+      self.update({dir: -self.state.dir})
+    }
   })
-  var sortTable = new SortTable
+  var sortTable = new SortTable({
+    state: {
+      dir: -1,
+      costs: (function() {
+        return [1, 34, 531, 53, 13, 53, 43]
+      })()
+    }
+  })
   Wet.render(document.getElementById("sort-table"), sortTable)
   </script>
 </html>

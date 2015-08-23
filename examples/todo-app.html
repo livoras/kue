@@ -75,7 +75,7 @@
 
   var App = Wet.component({template: appTpl})
 
-  Wet.render(document.getElementById("todo-app"), new App({
+  var app = new App({
     state: {
       todoAppData: {
         app: "",
@@ -100,7 +100,8 @@
         ]
       }
     }
-  }))
+  })
+  Wet.render(document.getElementById("todo-app"), app)
 
   </script>
 </html>
