@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TODO APP</title>
+  </head>
+  <body>
+    <div id="sort-table"></div>
+    <script type="text/javascript" src="../bin/wet.js"></script>
+
+    <style media="screen">
+    .done {
+      text-decoration: line-through;
+    }
+    </style>
+
+    <script type="text/template" id="sort-table-tpl">
+      <div>
+        <ul>
+          <li w-repeat="costs">{cost}$</li>
+        </ul>
+      </div>
+    </script>
+  </body>
+
+  <script type="text/javascript">
+  var tpl = document.getElementById("sort-table-tpl").innerHTML
+  var SortTable = Wet.component("SortTable", {
+    template: tpl
+  })
+  var sortTable = new SortTable
+  Wet.render(document.getElementById("sort-table"), sortTable)
+  </script>
+</html>
