@@ -1,4 +1,10 @@
-function Wet(options) {}
+/**
+ * @param options{Object}
+ */
+function Wet(options) {
+  var RootComponent = Wet.component(options)
+  return new RootComponent(options)
+}
 
 Wet.component = require("./component")
 Wet.register = require("./register")

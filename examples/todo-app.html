@@ -5,7 +5,10 @@
     <title>TODO APP</title>
   </head>
   <body>
-    <div id="todo-app"></div>
+    <div id="todo-app">
+        <div w-component="TodoApp:todoAppData"></div>
+        <div w-component="TodoApp:todoAppData2"></div>
+    </div>
     <hr>
     <script type="text/javascript" src="../bin/wet.js"></script>
 
@@ -14,13 +17,6 @@
       text-decoration: line-through;
     }
     </style>
-
-    <script type="text/template" id="app-tpl">
-      <div>
-        <div w-component="TodoApp:todoAppData"></div>
-        <div w-component="TodoApp:todoAppData2"></div>
-      </div>
-    </script>
 
     <script type="text/template" id="todo-app-tpl">
       <div>
@@ -45,7 +41,6 @@
   <script type="text/javascript">
 
   var tpl = document.getElementById("todo-app-tpl").innerHTML
-  var appTpl = document.getElementById("app-tpl").innerHTML
   var TodoApp = Wet.component({
     template: tpl,
     addTodo: function(content, app) {
@@ -57,9 +52,6 @@
       this.update({
         newTodo: ""
       })
-    },
-    go: function() {
-      console.log(this.scope.getObjectByPath("todos"));
     },
     handleKeyDown: function(event) {
       if (event.keyCode === 13) {
@@ -76,9 +68,8 @@
 
   Wet.register("TodoApp", TodoApp)
 
-  var App = Wet.component({template: appTpl})
-
-  var app = new App({
+  var app = new Wet({
+    el: document.getElementById("todo-app"),
     state: {
       todoAppData: {
         app: "",
@@ -102,14 +93,10 @@
           {content: "Go to bedroom", done: false}
         ]
       }
+    },
+    go: function() {
+      console.log(this.scope.getObjectByPath("todoAppData.todos"));
     }
-  })
-  Wet.render(document.getElementById("todo-app"), app)
-
-  console.log(app)
-
-  app.on("delete todo!", function() {
-    console.log("Todo item was deleted!", arguments);
   })
 
   </script>

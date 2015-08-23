@@ -12,7 +12,7 @@ var components = common.components
 var componentMethods = {
   init: function(options, config, componentOpts) {
     config = config || _.extend(true, {}, defaultComponentConfig)
-    this.el = $.getDOMNodeFromTemplate(componentOpts.template)
+    this.el = options.el || $.getDOMNodeFromTemplate(componentOpts.template)
     this.state = options.state
     this.parent = config.parent
     var parentScope = config.parent.scope
