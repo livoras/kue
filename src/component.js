@@ -19,6 +19,7 @@ var componentMethods = {
     this.scope = new Scope(config.currentPath, this.state, parentScope)
     this.scope.extra = config.extra || {}
     this.scope.extra.$this = this
+    delete options.el // FUCK IE7
     _.extend(this, options)
     compiler.compile(this.el, this)
   },
