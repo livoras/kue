@@ -7,7 +7,6 @@
   <body>
     <div id="todo-app"></div>
     <hr>
-    <div id="todo-app2"></div>
     <script type="text/javascript" src="../bin/wet.js"></script>
 
     <style media="screen">
@@ -15,6 +14,10 @@
       text-decoration: line-through;
     }
     </style>
+
+    <script type="text/template" id="app-tpl">
+      <div w-component="TodoApp:todoAppData">
+    </script>
 
     <script type="text/template" id="todo-app-tpl">
       <div>
@@ -39,11 +42,12 @@
   <script type="text/javascript">
 
   var tpl = document.getElementById("todo-app-tpl").innerHTML
-  var TodoApp = Wet.component("TodoApp", {
+  var appTpl = document.getElementById("app-tpl").innerHTML
+  var TodoApp = Wet.component({
     template: tpl,
     addTodo: function(content) {
       if (!content) return
-      this.updateArray("todos").push({
+      this.updateArray("todoAppData.todos").push({
         content: content,
         done: false
       })
@@ -60,38 +64,28 @@
       }
     },
     deleteTodo: function(index) {
-      this.updateArray("todos").splice(index, 1)
+      this.updateArray("todoAppData.todos").splice(index, 1)
     }
   })
 
-  var todoApp = new TodoApp({
+  Wet.register("TodoApp", TodoApp)
+
+  var App = Wet.component({template: appTpl})
+
+  Wet.render(document.getElementById("todo-app"), new App({
     state: {
-      name: "Todo App 1",
-      newTodo: "",
-      todos: [
-        {content: "Take a showser", done: false},
-        {content: "Wash clothes", done: false},
-        {content: "Play with the cats", done: false},
-        {content: "Go to bedroom", done: false}
-      ]
+      todoAppData: {
+        name: "Todo App 1",
+        newTodo: "",
+        todos: [
+          {content: "Take a showser", done: false},
+          {content: "Wash clothes", done: false},
+          {content: "Play with the cats", done: false},
+          {content: "Go to bedroom", done: false}
+        ]
+      }
     }
-  })
+  }))
 
-  var todoApp2 = new TodoApp({
-    state: {
-      name: "Todo App2",
-      newTodo: "",
-      todos: [
-        {content: "Take a showser2", done: false},
-        {content: "Wash clothes", done: false},
-        {content: "Play with the cats", done: false},
-        {content: "Go to bedroom", done: false}
-      ]
-    }
-  })
-  console.log(todoApp);
-
-  Wet.render(document.getElementById("todo-app"), todoApp)
-  Wet.render(document.getElementById("todo-app2"), todoApp2)
   </script>
 </html>

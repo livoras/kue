@@ -19,15 +19,18 @@ module.exports = {
       : stateName
     // Here to get method from parent component
     // TODO: to test
-    function F() {}
-    F.prototype = component.constructor.prototype
-    var pro = new F()
-    _.extend(pro, Component.prototype)
-    Component.prototype = pro
+    // @NOTE: REMOVE FRO NO NESSCESSARY ACCESSING PARENT SCOPE FRO IGNORANT COMPONENT
+    // function F() {}
+    // F.prototype = component.constructor.prototype
+    // var pro = new F()
+    // _.extend(pro, Component.prototype)
+    // Component.prototype = pro
+
     var subComponent = new Component({state: state}, {
       parent: component,
       currentPath: objectPath.join([component.scope.currentPath, path])
     })
+
     // Don't make component content interupt compilation.
     _.nextTick(function() {
       ele.innerHTML = ""

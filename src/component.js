@@ -6,6 +6,7 @@ var $ = require("./dom")
 var EventEmitter = require("./event-emitter")
 var Scope = require("./scope")
 var common = require("./common")
+var register = require("./register")
 var components = common.components
 
 var componentMethods = {
@@ -45,11 +46,9 @@ common.component = module.exports = function(componentName, componentOpts) {
   var Component = function(options, config) {
     this.init(options, config, componentOpts)
   }
+  register(componentName, Component)
   var pro = Component.prototype
   _.extend(pro, componentMethods)
-  if (_.isString(componentName) && componentName.length > 0) {
-    components[componentName] = Component
-  }
   _.of(componentOpts, function(key, value) {
     if(_.isFunction(value)) {
       pro[key] = value
