@@ -3,6 +3,7 @@ var _ = require("../util")
 
 module.exports = {
   bind: function(ele, attr, component, dir) {
+    console.log(ele, dir)
     var FUNCTION_CALL_REG = /([\S\s]+)(\([\S\s]+\))/
     var $ele = $(ele)
     for(var eventName in dir) {

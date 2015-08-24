@@ -100,7 +100,8 @@ exports.exec = function(expression, scope) {
 }
 
 exports.parseDirective = function(value) {
-  var STRING_DIR_REG = /^[_$\w][_$\w\d\s\(\)\.\[\]]*$/
+  // var STRING_DIR_REG = /^[_$\w][_$\w\d\s\(\)\.\[\]]*$/
+  var STRING_DIR_REG = /^[^:]+$/g
   var value = _.trim(value)
   if (value.length === 0 || STRING_DIR_REG.test(value)) {
     //return value

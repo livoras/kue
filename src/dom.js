@@ -6,6 +6,9 @@ var $ = function(dom) {
     hide: function() {
       this.el.style.display = "none"
     },
+    show: function() {
+      this.el.style.display = "block"
+    },
     attr: function(attr, name) {
       if (arguments.length === 1) {
         return this.el.getAttribute(attr)
