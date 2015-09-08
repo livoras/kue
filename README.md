@@ -1,4 +1,4 @@
-# Wet.js [![Build Status](https://travis-ci.org/livoras/kue.svg?branch=master)](https://travis-ci.org/livoras/kue)
+# Wet.js [![Build Status](https://travis-ci.org/livoras/wet.js.svg?branch=master)](https://travis-ci.org/livoras/wet.js)
 
 Simplest JavaScript MVVM for old system.
 
